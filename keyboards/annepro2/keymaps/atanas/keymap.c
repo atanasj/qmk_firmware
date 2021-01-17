@@ -4,7 +4,9 @@
 
 enum anne_pro_layers {
   _BASE_LAYER,
-  -VI_LAYER,
+  _VI_LAYER,
+  _NUMPAD_LAYER,
+  /* _MOUSE_LAYER, */
   _FN1_LAYER,
   _FN2_LAYER,
 };
@@ -39,9 +41,9 @@ enum anne_pro_layers {
  [_BASE_LAYER] = KEYMAP( /* Base */
     KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
     KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
-    LCTL_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
-    KC_LSPO, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
-    KC_F20, KC_LCMD, KC_LALT, KC_SPC, KC_RCMD, KC_RALT, MO(_FN1_LAYER), MO(_FN2_LAYER)
+    LCTL_T(KC_ESC), KC_A, KC_S, LT(_VI_LAYER,KC_D), KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
+    KC_LSPO, LT(_NUMPAD_LAYER,KC_Z), KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
+    KC_F20, KC_LGUI, KC_LALT, KC_SPC, RGUI_T(KC_LEFT), RALT_T(KC_DOWN), LT(_FN1_LAYER,KC_UP), LT(_FN2_LAYER,KC_RIGHT)
 ),
   /*
   * Layer _VI_LAYER
@@ -50,7 +52,7 @@ enum anne_pro_layers {
   * |-----------------------------------------------------------------------------------------+
   * |        |     |     |     |     |    |  HOME  | PGDN |  PGUP  |  END  |    |    |    |   \    |
   * |-----------------------------------------------------------------------------------------+
-  * | Esc     |KC_LALT |KC_LSFT |    |  KC_LCMD  |    |  LEFT  |  DOWN  |  UP  |  RIGHT  | | |    Enter    |
+  * | Esc     |KC_LALT |KC_LSFT |    |  KC_LGUI  |    |  LEFT  |  DOWN  |  UP  |  RIGHT  | | |    Enter    |
   * |-----------------------------------------------------------------------------------------+
   * |            |    |   |   |    |    |    |  BSPC  |  DEL  |   |    |           |
   * |-----------------------------------------------------------------------------------------+
@@ -58,13 +60,68 @@ enum anne_pro_layers {
   * \-----------------------------------------------------------------------------------------/
   *
   */
+
+                 /* [:##y :home] */
+                 /* [:u :page_down] */
+                 /* [:i :page_up] */
+                 /* [:##o :end :!finder] */
  [_VI_LAYER] = KEYMAP( /* Base */
     KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
-    KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
-    LCTL_T(KC_ESC), KC_A, KC_S, KC_D, KC_F, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS, RCTL_T(KC_ENT),
-    KC_LSPO, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
-    KC_F20, KC_LCMD, KC_LALT, KC_SPC, KC_RCMD, KC_RALT, MO(_FN1_LAYER), MO(_FN2_LAYER)
+    KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    LCTL_T(KC_ESC), KC_LALT, KC_LSFT, KC_TRNS, KC_LGUI, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS, RCTL_T(KC_ENT),
+    KC_LSPO, MO(_NUMPAD_LAYER), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), KC_TRNS, KC_RSPC,
+    KC_F20, KC_LGUI, KC_LALT, KC_SPC, KC_RGUI, KC_RALT, MO(_FN1_LAYER), MO(_FN2_LAYER)
 ),
+  /*
+  * Layer _NUMPAD_LAYER
+  * ,-----------------------------------------------------------------------------------------.
+* |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
+* |-----------------------------------------------------------------------------------------+
+* |        |     |  7  |  8  |  9  |     |  +  |  7  |  8  |  9  |     |     |     |        |
+* |-----------------------------------------------------------------------------------------+
+* |         |  0  |  4  |  5  |  6  |     |  0  |  4  |  5  |  6  |  /  |     |             |
+* |-----------------------------------------------------------------------------------------+
+* |            |     |  1  |  2  |  3  |  ,  |  *  |  1  |  2  |  3  |  -  |                |
+* |-----------------------------------------------------------------------------------------+
+* |       |       |       |               0                 |  .     |       |       |       |
+  * \-----------------------------------------------------------------------------------------/
+  *
+  */
+
+                 /* [:##semicolon :hyphen] */
+                 /* [:##v :left_shift] */
+                 /* [:##x :left_option] */
+                 /* [:##p :equal_sign] */
+ [_NUMPAD_LAYER] = KEYMAP( /* Base */
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_7,   KC_8,   KC_9,  KC_EQL, KC_TRNS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, MO(_VI_LAYER), KC_TRNS, KC_TRNS, KC_TRNS,   KC_4,   KC_5,   KC_6, KC_MINS, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_LALT, KC_TRNS, KC_LSFT, KC_TRNS, KC_TRNS,   KC_1,   KC_2,   KC_3, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS,   KC_0, KC_PDOT, KC_TRNS, KC_TRNS, KC_TRNS
+ ),
+  /*
+  * Layer _MOUSE_LAYER - Mouse Layer
+  * ,-----------------------------------------------------------------------------------------.
+  * |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
+  * |-----------------------------------------------------------------------------------------+
+  * |        |     |     |     |     |     |ACL2 |WL-U |MS-U |WL-D |ACL1 |ACL0 |     |        |
+  * |-----------------------------------------------------------------------------------------+
+  * |         |     | ACL0 | ACL1 | ACL2 |     |BTN3 |MS-L |MS-D |MS-R |BTN2 |     |             |
+  * |-----------------------------------------------------------------------------------------+
+  * |            |     |     |     |     |     |BTN4 |BTN5 |WL-L |WL-R |     |                |
+  * |-----------------------------------------------------------------------------------------+
+  * |       |       |       |              BTN1               |       |       |       |       |
+  * \-----------------------------------------------------------------------------------------/
+  *
+  */
+                 /* [:##u :!CTd]           ; get three finger lookup */
+ /* [_MOUSE_LAYER] = KEYMAP( /\* Base *\/ */
+ /*    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, */
+ /*    KC_TRNS, KC_ACL2, KC_ACL1, KC_ACL0, KC_TRNS, KC_TRNS, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, */
+ /*    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS, */
+ /*    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(LCMD(KC_D)), KC_TRNS, KC_BTN2, KC_TRNS, KC_TRNS, */
+ /*    KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS */
+ /* ), */
   /*
   * Layer _FN1_LAYER
   * ,-----------------------------------------------------------------------------------------.
@@ -85,7 +142,7 @@ enum anne_pro_layers {
     KC_TRNS, KC_TRNS, KC_UP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
     KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_PGDN, KC_TRNS,
     KC_TRNS, KC_VOLU, KC_VOLD, KC_MUTE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN2_LAYER), KC_TRNS
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN2_LAYER)
 ),
   /*
   * Layer _FN2_LAYER
@@ -107,7 +164,7 @@ enum anne_pro_layers {
     MO(_FN2_LAYER), KC_TRNS, KC_UP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
     KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_PGDN, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN1_LAYER), MO(_FN2_LAYER), KC_TRNS
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN1_LAYER), MO(_FN2_LAYER)
  ),
 };
 const uint16_t keymaps_size = sizeof(keymaps);
