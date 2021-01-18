@@ -12,55 +12,17 @@ enum anne_pro_layers {
   _FN2_LAYER,
 };
 
-/* enum custom_keycodes { */
-/*     killb = SAFE_RANGE, */
-/*     /\* killfwd *\/ */
-/* }; */
-
-/*                  /\* [:slash [:!CSleft_arrow :delete_or_backspace]] *\/ */
-/*                  /\* [:!Sslash [:!CSright_arrow :delete_or_backspace]] *\/ */
-/* const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) { */
-/*     switch(id) { */
-/*         case killb: { */
-/*             if (record->event.pressed) { */
-/*                 return MACRO( D(LCMD), D(LSFT), T(BSPC), U(LCTL), U(LCMD), END  ); */
-/*             } else { */
-/*                 /\* return MACRO( D(LCTL), T(V), U(LCTL), END  ); *\/ */
-/*             } */
-/*             break; */
-/*         } */
-/*     } */
-/*     return MACRO_NONE; */
-/* }; */
-/* bool process_record_user(uint16_t keycode, keyrecord_t *record) { */
-/*     switch (keycode) { */
-/*     case killback: */
-/*         if (record->event.pressed) { */
-/*             // when keycode is pressed */
-/*             register_code(LCMD(LSFT(KC_RIGHT))); */
-/*             tap_code(KC_BSPC); */
-/*             /\* SEND_STRING("cell"); *\/ */
-/*         } else { */
-/*             // when keycode is released */
-/*             clear_keyboard(); */
-/*         } */
-/*         break; */
-
-/*     case killfwd: */
-/*         if (record->event.pressed) { */
-/*             // when keycode is pressed */
-/*             register_code(LCMD(LSFT(KC_LEFT))); */
-/*             tap_code(KC_BSPC); */
-/*         } else { */
-/*             // when keycode is released */
-/*             clear_keyboard(); */
-/*         } */
-/*         break; */
-/*     } */
-/*     return true; */
-/* }; */
-
-
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+    if (record->event.pressed) {
+        switch(id) {
+            case 0:
+                return MACRO( D(LCMD), D(LSFT), T(LEFT), U(LCMD), U(LSFT), T(BSPC), END  );
+            case 1:
+                return MACRO( D(LCMD), D(LSFT), T(RIGHT), U(LCMD), U(LSFT), T(BSPC), END  );
+        }
+    }
+    return MACRO_NONE;
+};
 
 /*
 * Layer _BASE_LAYER
@@ -111,16 +73,11 @@ enum anne_pro_layers {
   * \-----------------------------------------------------------------------------------------/
   *
   */
-
-                 /* [:##y :home] */
-                 /* [:u :page_down] */
-                 /* [:i :page_up] */
-                 /* [:##o :end :!finder] */
  [_VI_LAYER] = KEYMAP( /* Base */
     KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
     KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    LCTL_T(KC_ESC), KC_LALT, KC_LSFT, KC_TRNS, KC_LCMD, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_TRNS, KC_TRNS, RCTL_T(KC_ENT),
-    KC_LSPO, MO(_NUMPAD_LAYER), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), KC_TRNS, KC_RSPC,
+    LCTL_T(KC_ESC), KC_LALT, KC_LSFT, KC_TRNS, KC_LCMD, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_F19, KC_TRNS, RCTL_T(KC_ENT),
+    KC_LSPO, MO(_NUMPAD_LAYER), KC_TRNS, KC_TRNS, KC_TRNS, M(0), LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), M(1), KC_RSPC,
     KC_F20, KC_LCMD, KC_LALT, KC_SPC, KC_RCMD, KC_RALT, MO(_FN1_LAYER), MO(_FN2_LAYER)
 ),
   /*
@@ -138,11 +95,6 @@ enum anne_pro_layers {
   * \-----------------------------------------------------------------------------------------/
   *
   */
-
-                 /* [:##semicolon :hyphen] */
-                 /* [:##v :left_shift] */
-                 /* [:##x :left_option] */
-                 /* [:##p :equal_sign] */
  [_NUMPAD_LAYER] = KEYMAP( /* Base */
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_7,   KC_8,   KC_9,  KC_EQL, KC_TRNS, KC_TRNS, KC_TRNS,
