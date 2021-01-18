@@ -13,7 +13,7 @@ ifeq ($(strip $(ANNEPRO2_EEPROM)), yes)
 endif
 
 # Options
-POINTING_DEVICE_ENABLE = yes
+# POINTING_DEVICE_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 
 # Keys
