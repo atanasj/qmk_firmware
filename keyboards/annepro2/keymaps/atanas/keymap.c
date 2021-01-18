@@ -12,6 +12,56 @@ enum anne_pro_layers {
   _FN2_LAYER,
 };
 
+/* enum custom_keycodes { */
+/*     killb = SAFE_RANGE, */
+/*     /\* killfwd *\/ */
+/* }; */
+
+/*                  /\* [:slash [:!CSleft_arrow :delete_or_backspace]] *\/ */
+/*                  /\* [:!Sslash [:!CSright_arrow :delete_or_backspace]] *\/ */
+/* const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) { */
+/*     switch(id) { */
+/*         case killb: { */
+/*             if (record->event.pressed) { */
+/*                 return MACRO( D(LCMD), D(LSFT), T(BSPC), U(LCTL), U(LCMD), END  ); */
+/*             } else { */
+/*                 /\* return MACRO( D(LCTL), T(V), U(LCTL), END  ); *\/ */
+/*             } */
+/*             break; */
+/*         } */
+/*     } */
+/*     return MACRO_NONE; */
+/* }; */
+/* bool process_record_user(uint16_t keycode, keyrecord_t *record) { */
+/*     switch (keycode) { */
+/*     case killback: */
+/*         if (record->event.pressed) { */
+/*             // when keycode is pressed */
+/*             register_code(LCMD(LSFT(KC_RIGHT))); */
+/*             tap_code(KC_BSPC); */
+/*             /\* SEND_STRING("cell"); *\/ */
+/*         } else { */
+/*             // when keycode is released */
+/*             clear_keyboard(); */
+/*         } */
+/*         break; */
+
+/*     case killfwd: */
+/*         if (record->event.pressed) { */
+/*             // when keycode is pressed */
+/*             register_code(LCMD(LSFT(KC_LEFT))); */
+/*             tap_code(KC_BSPC); */
+/*         } else { */
+/*             // when keycode is released */
+/*             clear_keyboard(); */
+/*         } */
+/*         break; */
+/*     } */
+/*     return true; */
+/* }; */
+
+
+
 /*
 * Layer _BASE_LAYER
 * ,-----------------------------------------------------------------------------------------.
