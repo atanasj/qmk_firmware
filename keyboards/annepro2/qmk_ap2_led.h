@@ -15,6 +15,8 @@
 #define CMD_LED_NEXT_ANIMATION_SPEED        0xD
 #define CMD_LED_SET_FOREGROUND_COLOR        0xE
 #define CMD_LED_KEYPRESS                    0xF
+#define CMD_LED_CAPS_ON                     0xE
+#define CMD_LED_CAPS_OFF                    0xF
 
 void annepro2LedDisable(void);
 void annepro2LedEnable(void);

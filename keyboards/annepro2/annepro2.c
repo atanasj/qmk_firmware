@@ -152,3 +152,13 @@ bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
     }
     return process_record_user(keycode, record);
 }
+
+bool led_update_kb(led_t led_state) {
+    if (led_state.caps_lock) {
+        sdPut(&SD0, LED_CAPS_ON);
+    } else {
+        sdPut(&SD0, LED_CAPS_OFF);
+    }
+
+    return false;
+}
