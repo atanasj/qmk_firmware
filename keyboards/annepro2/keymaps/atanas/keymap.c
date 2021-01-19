@@ -24,18 +24,43 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
     return MACRO_NONE;
 };
 
+typedef struct {
+    bool is_press_action;
+    uint8_t state;
+} tap;
+
+// Define a type for as many tap dance states as you need
+enum {
+    SINGLE_TAP = 1,
+    SINGLE_HOLD,
+    DOUBLE_TAP
+};
+
+enum {
+    D_LAYR, // Our custom tap dance key; add any other tap dance keys to this enum
+};
+
+// Declare the functions to be used with your tap dance key(s)
+
+// Function associated with all tap dances
+uint8_t cur_dance(qk_tap_dance_state_t *state);
+
+// Functions associated with individual tap dances
+void ql_finished(qk_tap_dance_state_t *state, void *user_data);
+void ql_reset(qk_tap_dance_state_t *state, void *user_data);
+
 /*
 * Layer _BASE_LAYER
 * ,-----------------------------------------------------------------------------------------.
-* | ~ |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  0  |  -  |  =  |    Bksp     |
+* | ~ |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  0  |  -  |  =  |    BKSP     |
 * |-----------------------------------------------------------------------------------------+
-* | Tab    |  q  |  w  |  e  |  r  |  t  |  y  |  u  |  i  |  o  |  p  |  [  |  ]  |   \    |
+* | TAB    |  q  |  w  |  e  |  r  |  t  |  y  |  u  |  i  |  o  |  p  |  [  |  ]  |   \    |
 * |-----------------------------------------------------------------------------------------+
-* | Ctrl    |  a  |  s  |  d  |  f  |  g  |  h  |  j  |  k  |  l  |  ;  |  '  |    Ctrl     |
+* | CTRL    |  a  |  s  |  d  |  f  |  g  |  h  |  j  |  k  |  l  |  ;  |  '  |    CTRL     |
 * |-----------------------------------------------------------------------------------------+
-* | Shift      |  z  |  x  |  c  |  v  |  b  |  n  |  m  |  ,  |  .  |  /  |    Shift       |
+* | SHIFT      |  z  |  x  |  c  |  v  |  b  |  n  |  m  |  ,  |  .  |  /  |    SHIFT       |
 * |-----------------------------------------------------------------------------------------+
-* | F20  |  L1   |  Alt  |               space             |    R1  |  Alt  |  FN1  |  FN2  |
+* | HYPER  |  LGUI   |  ALT  |               SPACE          | RCAG  |  MEH  |  FN1  |  FN2  |
 * \-----------------------------------------------------------------------------------------/
 * Layer TAP in _BASE_LAYER
 * ,-----------------------------------------------------------------------------------------.
@@ -43,18 +68,18 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 * |-----------------------------------------------------------------------------------------+
 * |        |     |     |     |     |     |     |     |     |     |     |     |     |        |
 * |-----------------------------------------------------------------------------------------+
-* | esc     |     |     |     |     |     |     |     |     |     |     |     |  Enter      |
+* | ESC     |     |     |     |     |     |     |     |     |     |     |     |  ENTER      |
 * |-----------------------------------------------------------------------------------------+
 * |     (      |     |     |     |     |     |     |     |     |     |     |       |   )    |
 * |-----------------------------------------------------------------------------------------+
-* |       |       |       |                                 |       |       |       |       |
+* | F20   |       |       |                                 |  LEFT  |  DOWN | UP   | RIGHT |
 * \-----------------------------------------------------------------------------------------/
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_BASE_LAYER] = KEYMAP( /* Base */
     KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
     LT(_MOUSE_LAYER,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
-    LCTL_T(KC_ESC), KC_A, KC_S, LT(_VI_LAYER,KC_D), KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
+    LCTL_T(KC_ESC), KC_A, KC_S, TD(D_LAYR), KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
     KC_LSPO, LT(_NUMPAD_LAYER,KC_Z), KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
     HYPR_T(KC_F20), KC_LCMD, KC_LALT, KC_SPC, RCAG_T(KC_LEFT), MEH_T(KC_DOWN), LT(_FN1_LAYER,KC_UP), LT(_FN2_LAYER,KC_RIGHT)
 ),
@@ -65,7 +90,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * |-----------------------------------------------------------------------------------------+
   * |        |     |     |     |     |    |  HOME  | PGDN |  PGUP  |  END  |    |    |    |   \    |
   * |-----------------------------------------------------------------------------------------+
-  * | Esc     |KC_LALT |KC_LSFT |    |  KC_LCMD  |    |  LEFT  |  DOWN  |  UP  |  RIGHT  | | |    Enter    |
+  * | ESC     |KC_LALT |KC_LSFT |    |  KC_LCMD  |    |  LEFT  |  DOWN  |  UP  |  RIGHT  | | |    ENTER    |
   * |-----------------------------------------------------------------------------------------+
   * |            |    |   |   |    |    |    |  BSPC  |  DEL  |   |    |           |
   * |-----------------------------------------------------------------------------------------+
@@ -75,9 +100,9 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   */
  [_VI_LAYER] = KEYMAP( /* Base */
     KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
-    KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_TRNS, SCMD(KC_LBRC), SCMD(KC_RBRC), KC_TRNS,
-    LCTL_T(KC_ESC), KC_LALT, KC_LSFT, KC_TRNS, KC_LCMD, KC_TRNS, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_F19, KC_TRNS, RCTL_T(KC_ENT),
-    KC_LSPO, MO(_NUMPAD_LAYER), KC_TRNS, KC_TRNS, KC_TRNS, M(0), LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), M(1), KC_RSPC,
+    KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_NO, SCMD(KC_LBRC), SCMD(KC_RBRC), KC_NO,
+    LCTL_T(KC_ESC), KC_LALT, KC_LSFT, KC_TRNS, KC_LCMD, KC_NO, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_F19, KC_NO, RCTL_T(KC_ENT),
+    KC_LSPO, MO(_NUMPAD_LAYER), KC_NO, KC_NO, KC_NO, M(0), LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), M(1), KC_RSPC,
     HYPR_T(KC_F20), KC_LCMD, KC_LALT, KC_SPC, RCTL(RALT(KC_RCMD)), MOD_MEH, MO(_FN1_LAYER), MO(_FN2_LAYER)
 ),
   /*
@@ -96,11 +121,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_NUMPAD_LAYER] = KEYMAP( /* Base */
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_7,   KC_8,   KC_9,  KC_EQL, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, MO(_VI_LAYER), KC_TRNS, KC_TRNS, KC_TRNS,   KC_4,   KC_5,   KC_6, KC_MINS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_LALT, KC_TRNS, KC_LSFT, KC_TRNS, KC_TRNS,   KC_1,   KC_2,   KC_3, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS,   KC_0, KC_PDOT, KC_TRNS, KC_TRNS, KC_TRNS
+    KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_7,  KC_8,  KC_9,  KC_EQL,  KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_4,  KC_5,  KC_6,  KC_MINS, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_LALT, KC_NO, KC_LSFT, KC_NO, KC_NO, KC_1,  KC_2,  KC_3,  KC_NO,   KC_NO,
+    KC_NO, KC_NO, KC_NO,   KC_0,  KC_PDOT, KC_NO, KC_NO, KC_NO
  ),
   /*
   * Layer _MOUSE_LAYER - Mouse Layer
@@ -109,7 +134,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * |-----------------------------------------------------------------------------------------+
   * |        |     |     |     |     |     |ACL2 |WL-U |MS-U |WL-D |ACL1 |ACL0 |     |        |
   * |-----------------------------------------------------------------------------------------+
-  * |         |     | ACL0 | ACL1 | ACL2 |     |BTN3 |MS-L |MS-D |MS-R |BTN2 |     |             |
+  * |         |     | ACL0 | ACL1 | ACL2 |     |BTN3 |MS-L |MS-D |MS-R |BTN2 |     |          |
   * |-----------------------------------------------------------------------------------------+
   * |            |     |     |     |     |     |BTN4 |BTN5 |WL-L |WL-R |     |                |
   * |-----------------------------------------------------------------------------------------+
@@ -118,11 +143,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_MOUSE_LAYER] = KEYMAP( /* Base */
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_ACL2, KC_ACL0, KC_ACL1, MO(_MEDIA_LAYER), KC_TRNS, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(LCMD(KC_D)), KC_TRNS, KC_BTN2, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_ACL2, KC_ACL0, KC_ACL1, MO(_MEDIA_LAYER), KC_NO, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, LCTL(LCMD(KC_D)), KC_NO, KC_BTN2, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
  ),
   /*
   * Layer _MEDIA_LAYER
@@ -141,10 +166,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   */
  [_MEDIA_LAYER] = KEYMAP( /* Base */
     KC_GRV, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MPLY, KC_HOME, KC_END, KC_TRNS,
-    KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_PGUP, KC_PGDN, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN1_LAYER), MO(_FN2_LAYER)
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPLY, KC_HOME, KC_END, KC_NO,
+    KC_NO, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO, KC_NO, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_PGUP, KC_PGDN, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MUTE, KC_NO, KC_INS, KC_DEL, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, MO(_FN1_LAYER), MO(_FN2_LAYER)
 ),
  /*
   * Layer _FN1_LAYER
@@ -162,11 +187,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_FN1_LAYER] = KEYMAP( /* Base */
-    KC_TRNS, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_PGDN, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN2_LAYER)
+    KC_NO, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9,  KC_F10,  KC_F11,  KC_F12, KC_DEL,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_PSCR, KC_HOME, KC_END, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_PGUP, KC_PGDN, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL,  KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, MO(_FN2_LAYER)
 ),
   /*
   * Layer _FN2_LAYER
@@ -184,15 +209,65 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_FN2_LAYER] = KEYMAP( /* Base */
-    KC_AP2_BT_UNPAIR, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_TRNS, KC_TRNS, KC_TRNS, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_TRNS, KC_TRNS,
-    RESET, KC_TRNS, KC_BRIU, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
-    KC_CAPS, KC_TRNS, KC_BRID, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_PGDN, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(_FN1_LAYER), MO(_FN2_LAYER)
+    KC_AP2_BT_UNPAIR, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_NO, KC_NO, KC_NO, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_NO,
+    RESET, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
+    KC_CAPS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PGUP, KC_PGDN, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_NO,
+    KC_NO, KC_NO, KC_BRID, KC_BRIU, KC_NO, KC_NO, MO(_FN1_LAYER), MO(_FN2_LAYER)
  ),
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
+// Determine the current tap dance state
+uint8_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return SINGLE_TAP;
+        else return SINGLE_HOLD;
+    } else if (state->count == 2) return DOUBLE_TAP;
+    else return 8;
+}
+
+// Initialize tap structure associated with example tap dance key
+static tap ql_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+// Functions that control what our tap dance key does
+void ql_finished(qk_tap_dance_state_t *state, void *user_data) {
+    ql_tap_state.state = cur_dance(state);
+    switch (ql_tap_state.state) {
+        case SINGLE_TAP:
+            tap_code(KC_D);
+            break;
+        case SINGLE_HOLD:
+            layer_on(_VI_LAYER);
+            break;
+        case DOUBLE_TAP:
+            // Check to see if the layer is already set
+            if (layer_state_is(_VI_LAYER)) {
+                // If already set, then switch it off
+                layer_off(_VI_LAYER);
+            } else {
+                // If not already set, then switch the layer on
+                layer_on(_VI_LAYER);
+            }
+            break;
+    }
+}
+
+void ql_reset(qk_tap_dance_state_t *state, void *user_data) {
+    // If the key was held down and now is released then switch off the layer
+    if (ql_tap_state.state == SINGLE_HOLD) {
+        layer_off(_VI_LAYER);
+    }
+    ql_tap_state.state = 0;
+}
+
+// Associate our tap dance key with its functionality
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [D_LAYR] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, ql_finished, ql_reset, 125)
+};
 
 void matrix_init_user(void) {
 

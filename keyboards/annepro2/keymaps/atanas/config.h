@@ -1,7 +1,7 @@
 /* #pragma once */
 
 /* #undef TAPPING_TERM */
-/* #define TAPPING_TERM 200 */
+#define TAPPING_TERM 175
 /* #define RETRO_TAPPING */
 
 /* #undef TAPPING_TOGGLE */
