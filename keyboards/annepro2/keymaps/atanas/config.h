@@ -12,6 +12,6 @@
 /* #define MK_COMBINED */
 #define PERMISSIVE_HOLD
 
-/* #define CAPS_LOCATION (MATRIX_COLS * 0 + 0) */
+#define CAPS_LOCATION (MATRIX_COLS * 0 + 0)
 
-/* #define IDLE_PROFILE_INDEX 0 */
+#define IDLE_PROFILE_INDEX 0

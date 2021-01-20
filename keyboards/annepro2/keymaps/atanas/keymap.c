@@ -13,6 +13,33 @@ enum anne_pro_layers {
   _FN2_LAYER,
 };
 
+enum profile {
+  RED,
+  GREEN,
+  BLUE,
+  RAINBOWHORIZONTAL,
+  RAINBOWVERTICAL,
+  ANIMATEDRAINBOWVERTICAL,
+  ANIMATEDRAINBOWFLOW,
+  ANIMATEDRAINBOWWATERFALL,
+  ANIMATEDBREATHING,
+  ANIMATEDSPECTRUM
+};
+
+uint8_t cyclabe_profiles[] = {
+  IDLE_PROFILE_INDEX,
+  ANIMATEDRAINBOWFLOW,
+  ANIMATEDRAINBOWVERTICAL,
+  ANIMATEDRAINBOWWATERFALL,
+  ANIMATEDBREATHING,
+  ANIMATEDSPECTRUM
+};
+
+enum custom_codes {
+  NEXT_PROFILE = AP2_SAFE_RANGE,
+  ENABLE_OR_DISABLE_LEDS
+};
+
 /* macros */
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
     if (record->event.pressed) {
@@ -190,8 +217,8 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_FN2_LAYER] = KEYMAP( /* Base */
-    KC_AP2_BT_UNPAIR, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_NO, KC_NO, KC_NO, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_NO,
-    RESET, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
+    KC_AP2_USB, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_NO, NEXT_PROFILE, ENABLE_OR_DISABLE_LEDS, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_AP2_BT_UNPAIR,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
     KC_CAPS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PGUP, KC_PGDN, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_NO,
     KC_NO, KC_NO, KC_BRID, KC_BRIU, KC_NO, KC_NO, MO(_FN1_LAYER), KC_TRNS
@@ -199,6 +226,21 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
+void enableProfileColor(uint8_t * profile);
+void resetProfileColor(void);
+
+bool is_caps_set = false;
+bool is_led_on = true;
+uint8_t base_profile = IDLE_PROFILE_INDEX;
+
+uint8_t idle_profile[] = {0x00,0x00,0x00};
+uint8_t caps_profile[] = {0xFF,0x00,0x00};
+uint8_t vi_profile[] = {0x44,0x00,0xFF};
+uint8_t numpad_profile[] = {0x00,0x00,0x00};
+uint8_t mouse_profile[] = {0x00,0x00,0x00};
+uint8_t media_profile[] = {0x00,0x00,0x00};
+uint8_t fn1_profile[] = {0x00,0x00,0x00};
+uint8_t fn2_profile[] = {0x00,0x00,0x00};
 
 void matrix_init_user(void) {
 
@@ -207,6 +249,99 @@ void matrix_init_user(void) {
 void matrix_scan_user(void) {
 }
 
-layer_state_t layer_state_set_user(layer_state_t layer) {
-    return layer;
+void keyboard_post_init_user(void) {
+  annepro2LedEnable();
+  resetProfileColor();
+}
+
+// The function to handle the caps lock logic
+bool led_update_user(led_t leds) {
+  if (leds.caps_lock) {
+    is_caps_set = true;
+    enableProfileColor(caps_profile);
+    return true;
+  } else if(is_caps_set) {
+    is_caps_set = false;
+    resetProfileColor();
+  }
+
+  return true;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  switch(get_highest_layer(state)) {
+    case _VI_LAYER:
+      enableProfileColor(vi_profile);
+      break;
+    case _NUMPAD_LAYER:
+      enableProfileColor(numpad_profile);
+      break;
+    case _MOUSE_LAYER:
+      enableProfileColor(mouse_profile);
+      break;
+    case _MEDIA_LAYER:
+      enableProfileColor(media_profile);
+      break;
+    case _FN1_LAYER:
+      enableProfileColor(fn1_profile);
+      break;
+    case _FN2_LAYER:
+      enableProfileColor(fn2_profile);
+      break;
+    default:
+      resetProfileColor();
+      break;
+  }
+
+  return state;
+}
+
+
+void enableProfileColor (uint8_t * profile) {
+  if(is_caps_set) {
+    annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
+  } else {
+    annepro2LedSetForegroundColor(profile[0], profile[1], profile[2]);
+  }
+}
+
+void resetProfileColor(void) {
+  if(is_caps_set) {
+    annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
+  } else if(base_profile == IDLE_PROFILE_INDEX) {
+    annepro2LedSetForegroundColor(idle_profile[0], idle_profile[1], idle_profile[2]);
+  } else {
+    annepro2LedSetProfile(cyclabe_profiles[base_profile]);
+  }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case NEXT_PROFILE:
+      if (record->event.pressed) {
+        base_profile++;
+        if(base_profile >= (sizeof(cyclabe_profiles)/sizeof(cyclabe_profiles[0])))
+          base_profile = IDLE_PROFILE_INDEX;
+
+        if(base_profile == IDLE_PROFILE_INDEX) {
+          annepro2LedSetForegroundColor(idle_profile[0], idle_profile[1], idle_profile[2]);
+        } else {
+          annepro2LedSetProfile(cyclabe_profiles[base_profile]);
+        }
+      }
+      return true;
+    case ENABLE_OR_DISABLE_LEDS:
+      if (record->event.pressed) {
+        if(is_led_on) {
+          is_led_on = false;
+          annepro2LedDisable();
+        } else {
+          annepro2LedEnable();
+          is_led_on = true;
+        }
+      }
+      return true;
+    default:
+      return true;
+  }
 }
