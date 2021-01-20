@@ -98,7 +98,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
  [_NUMPAD_LAYER] = KEYMAP( /* Base */
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_7,   KC_8,   KC_9,  KC_EQL, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, MO(_VI_LAYER), KC_NO, KC_NO, KC_NO,   KC_4,   KC_5,   KC_6, KC_MINS, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_4,   KC_5,   KC_6, KC_MINS, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_LALT, KC_NO, KC_LSFT, KC_NO, KC_NO,   KC_1,   KC_2,   KC_3, KC_NO, KC_NO,
     KC_NO, KC_NO, KC_NO,   KC_0, KC_PDOT, KC_NO, KC_NO, KC_NO
  ),
