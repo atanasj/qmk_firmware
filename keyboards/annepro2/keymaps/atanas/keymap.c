@@ -104,8 +104,8 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
  [_NUMPAD_LAYER] = KEYMAP( /* Base */
     KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,
     KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_7,  KC_8,  KC_9,  KC_EQL,  KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_4,  KC_5,  KC_6,  KC_MINS, KC_NO, KC_NO,
-    KC_NO, KC_TRNS, KC_LALT, KC_NO, KC_LSFT, KC_NO, KC_NO, KC_1,  KC_2,  KC_3,  KC_NO,   KC_NO,
+    KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_PDOT, KC_4,  KC_5,  KC_6,  KC_MINS, KC_NO, KC_NO,
+    KC_NO, KC_TRNS, KC_LALT, KC_NO, KC_LSFT, KC_NO, KC_NO, KC_1,  KC_2,  KC_3,  KC_SLSH,   KC_NO,
     KC_NO, KC_NO,   KC_NO,   KC_0,  KC_PDOT, KC_NO, KC_NO, KC_NO
  ),
   /*
@@ -190,11 +190,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_FN2_LAYER] = KEYMAP( /* Base */
-    KC_AP2_BT_UNPAIR, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_NO, KC_NO, KC_NO, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_NO,
-    RESET, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
-    KC_CAPS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PGUP, KC_PGDN, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_NO,
-    KC_NO, KC_NO, KC_BRID, KC_BRIU, KC_NO, KC_NO, MO(_FN1_LAYER), KC_TRNS
+    KC_AP2_USB, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_NO, KC_NO, KC_NO,   KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_AP2_BT_UNPAIR,
+    RESET,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_NO, KC_NO,   KC_NO,         KC_NO,        KC_PSCR,                  KC_HOME,         KC_END, KC_NO,
+    KC_CAPS,    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_NO, KC_NO,   KC_NO,         KC_NO,        KC_PGUP,                  KC_PGDN,         KC_NO,
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_NO, KC_NO,   KC_NO,         KC_INS,       KC_DEL,                   KC_NO,
+    KC_NO,      KC_NO,      KC_BRID,    KC_BRIU,    KC_NO,      KC_NO, MO(_FN1_LAYER), KC_TRNS
  ),
 };
 const uint16_t keymaps_size = sizeof(keymaps);
