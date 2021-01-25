@@ -58,7 +58,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_BASE_LAYER] = KEYMAP( /* Base */
-    KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
+    LT(_FN1_LAYER,KC_GRV), KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
     LT(_MOUSE_LAYER,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, RCMD_T(KC_BSLS),
     LCTL_T(KC_ESC), KC_A, KC_S, LT(_VI_LAYER,KC_D), KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
     KC_LSPO, LT(_NUMPAD_LAYER,KC_Z), KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
@@ -80,7 +80,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_VI_LAYER] = KEYMAP( /* Base */
-    KC_GRV,  KC_1,              KC_2,    KC_3,                KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
+    KC_TRNS,  KC_1,              KC_2,    KC_3,                KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
     KC_TRNS, KC_NO,             KC_NO,   KC_NO,               KC_NO, KC_NO, KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_NO, SCMD(KC_LBRC), SCMD(KC_RBRC), KC_NO,
     KC_TRNS, KC_LALT, KC_LSFT,  KC_TRNS, KC_LCMD, KC_NO,      KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_F19, KC_NO, KC_TRNS,
     KC_NO,   MO(_NUMPAD_LAYER), KC_NO,   KC_NO, KC_NO, M_DBW, LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), M_DFW, KC_NO,
