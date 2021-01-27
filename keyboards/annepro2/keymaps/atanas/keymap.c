@@ -4,12 +4,12 @@
 
 
 enum anne_pro_layers {
-  _BASE_LAYER,
-  _VI_LAYER,
-  _NUMPAD_LAYER,
-  _MOUSE_LAYER,
-  _MEDIA_LAYER,
-  _FN_LAYER,
+  _BL, /* base layer */
+  _VI, /* vi navigation layer */
+  _NL, /* numpad layer */
+  _MS, /* mouse layer */
+  _ML, /* media layer */
+  _FN, /* function layer */
 };
 
 /* macros */
@@ -30,7 +30,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 #define M_DFW M(1)
 
 /*
-* Layer _BASE_LAYER
+* Layer _BL
 * ,-----------------------------------------------------------------------------------------.
 * | ~ |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  0  |  -  |  =  |    Bksp     |
 * |-----------------------------------------------------------------------------------------+
@@ -42,7 +42,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 * |-----------------------------------------------------------------------------------------+
 * | F20  |  L1   |  Alt  |               space             |    R1  |  Alt  |  FN  |  FN2  |
 * \-----------------------------------------------------------------------------------------/
-* Layer TAP in _BASE_LAYER
+* Layer TAP in _BL
 * ,-----------------------------------------------------------------------------------------.
 * |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
 * |-----------------------------------------------------------------------------------------+
@@ -56,15 +56,15 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 * \-----------------------------------------------------------------------------------------/
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
- [_BASE_LAYER] = KEYMAP( /* Base */
-    LT(_FN_LAYER,KC_GRV), KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
-    LT(_MOUSE_LAYER,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, RCMD_T(KC_BSLS),
-    LCTL_T(KC_ESC), KC_A, KC_S, LT(_VI_LAYER,KC_D), KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
-    KC_LSPO, LT(_NUMPAD_LAYER,KC_Z), KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
-    HYPR_T(KC_F20), KC_LCMD, KC_LALT, KC_SPC, RCAG_T(KC_LEFT), MEH_T(KC_DOWN), LT(_FN_LAYER,KC_UP), LT(_MEDIA_LAYER,KC_RIGHT)
+ [_BL] = KEYMAP( /* Base */
+    LT(_FN,KC_GRV), KC_1,         KC_2,    KC_3,            KC_4,            KC_5,           KC_6,          KC_7,           KC_8,    KC_9,   KC_0,    KC_MINS, KC_EQL,        KC_BSPC,
+    LT(_MS,KC_TAB), KC_Q,         KC_W,    KC_E,            KC_R,            KC_T,           KC_Y,          KC_U,           KC_I,    KC_O,   KC_P,    KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
+    LCTL_T(KC_ESC), KC_A,         KC_S,    LT(_VI,KC_D),    KC_F,            KC_G,           KC_H,          KC_J,           KC_K,    KC_L,   KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
+    KC_LSPO,        LT(_NL,KC_Z), KC_X,    KC_C,            KC_V,            KC_B,           KC_N,          KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
+    HYPR_T(KC_F20), KC_LCMD,      KC_LALT, KC_SPC,          LCAG_T(KC_LEFT), MEH_T(KC_DOWN), LT(_FN,KC_UP), LT(_ML,KC_RIGHT)
 ),
   /*
-  * Layer _VI_LAYER
+  * Layer _VI
   * ,-----------------------------------------------------------------------------------------.
   * |     |     |     |     |     |     |     |     |     |     |    |    |    |              |
   * |-----------------------------------------------------------------------------------------+
@@ -78,15 +78,15 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * \-----------------------------------------------------------------------------------------/
   *
   */
- [_VI_LAYER] = KEYMAP( /* Base */
-    KC_TRNS, KC_1,              KC_2,    KC_3,                KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, KC_BSPC,
-    KC_TRNS, KC_NO,             KC_NO,   KC_NO, MO(_MEDIA_LAYER),    MO(_FN_LAYER), KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_NO, SCMD(KC_LBRC), SCMD(KC_RBRC), KC_NO,
-    KC_TRNS, KC_LALT, KC_LSFT,  KC_TRNS, KC_LCMD, KC_NO,      KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_F19, KC_NO, KC_TRNS,
-    KC_NO,   MO(_NUMPAD_LAYER), KC_NO,   KC_NO, KC_NO, M_DBW, LALT(KC_BSPC), KC_BSPC, KC_DEL, LALT(KC_DEL), M_DFW, KC_NO,
-    KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, RCTL(RALT(KC_RCMD)), MOD_MEH, MO(_FN_LAYER), MO(_MEDIA_LAYER)
+ [_VI] = KEYMAP( /* Base */
+    _______, KC_1,    KC_2,    KC_3,    KC_4,         KC_5,    KC_6,       KC_7,     KC_8,    KC_9,      KC_0,    KC_MINS,       KC_EQL,        KC_BSPC,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, MO(_ML),      MO(_FN), KC_HOME,    KC_PGDN,  KC_PGUP, KC_END,    XXXXXXX, SCMD(KC_LBRC), SCMD(KC_RBRC), XXXXXXX,
+    _______, KC_LALT, KC_LSFT, _______, KC_LCMD,      XXXXXXX, KC_LEFT,    KC_DOWN,  KC_UP,   KC_RIGHT,  KC_F19,  XXXXXXX,       _______,
+    XXXXXXX, MO(_NL), XXXXXXX, XXXXXXX, XXXXXXX,      M_DBW,   A(KC_BSPC), KC_BSPC,  KC_DEL,  A(KC_DEL), M_DFW,   XXXXXXX,
+    _______, _______, _______, _______, LCA(KC_LCMD), MOD_MEH, MO(_FN),    MO(_ML)
 ),
   /*
-  * Layer _NUMPAD_LAYER
+  * Layer _NL
   * ,-----------------------------------------------------------------------------------------.
 * |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
 * |-----------------------------------------------------------------------------------------+
@@ -100,15 +100,15 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * \-----------------------------------------------------------------------------------------/
   *
   */
- [_NUMPAD_LAYER] = KEYMAP( /* Base */
-    KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_NO, KC_7,  KC_8,  KC_9,  KC_EQL,  KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO,   KC_NO,   KC_NO, KC_NO,   KC_NO, KC_PDOT, KC_4,  KC_5,  KC_6,  KC_MINS, KC_NO, KC_NO,
-    KC_NO, KC_TRNS, KC_LALT, KC_NO, KC_LSFT, KC_NO, KC_NO, KC_1,  KC_2,  KC_3,  KC_SLSH,   KC_NO,
-    KC_NO, KC_NO,   KC_NO,   KC_0,  KC_PDOT, KC_NO, KC_NO, KC_NO
+ [_NL] = KEYMAP( /* Base */
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    KC_EQL,  XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PDOT, KC_4,    KC_5,    KC_6,    KC_MINS, XXXXXXX, XXXXXXX,
+    XXXXXXX, _______, KC_LALT, XXXXXXX, KC_LSFT, XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    KC_SLSH, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, KC_0,    KC_PDOT, XXXXXXX, XXXXXXX, XXXXXXX
  ),
   /*
-  * Layer _MOUSE_LAYER - Mouse Layer
+  * Layer _MS - Mouse Layer
   * ,-----------------------------------------------------------------------------------------.
   * |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
   * |-----------------------------------------------------------------------------------------+
@@ -122,15 +122,15 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * \-----------------------------------------------------------------------------------------/
   *
   */
- [_MOUSE_LAYER] = KEYMAP( /* Base */
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_TRNS, KC_ACL2, KC_ACL0, KC_ACL1, MO(_MEDIA_LAYER), KC_NO, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, LCTL(LCMD(KC_D)), KC_NO, KC_BTN2, KC_NO, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
+ [_MS] = KEYMAP( /* Base */
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    _______, KC_ACL2, KC_ACL0, KC_ACL1, MO(_ML),    XXXXXXX, KC_WH_L, KC_WH_U,    KC_WH_D, KC_WH_R, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_MS_L, KC_MS_D,    KC_MS_U, KC_MS_R, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, C(G(KC_D)), XXXXXXX, KC_BTN2, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, KC_BTN1, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX
  ),
   /*
-  * Layer _MEDIA_LAYER
+  * Layer _ML
   * ,-----------------------------------------------------------------------------------------.
   * |  `  |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 |  F7 |  F8 |  F9 | F10 | F11 | F12 |  DELETE   |
   * |-----------------------------------------------------------------------------------------+
@@ -144,15 +144,15 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * \-----------------------------------------------------------------------------------------/
   *
   */
- [_MEDIA_LAYER] = KEYMAP( /* Base */
-    KC_AP2_USB, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_NO, KC_NO,          KC_NO,   KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_AP2_BT_UNPAIR,
-    RESET,      KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_NO, KC_NO,          KC_NO,   KC_NO,         KC_NO,        KC_MPLY,                  KC_HOME,         KC_END, KC_NO,
-    KC_CAPS,    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_MPRV,        KC_VOLD, KC_VOLU,       KC_MNXT,      KC_PGUP,                  KC_PGDN,         KC_NO,
-    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_NO,          KC_MUTE, KC_NO,         KC_INS,       KC_DEL,                   KC_NO,
-    KC_NO,      KC_NO,      KC_BRID,    KC_BRIU,    KC_NO,      KC_NO, MO(_FN_LAYER), KC_TRNS
+ [_ML] = KEYMAP( /* Base */
+    KC_AP2_USB, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, XXXXXXX, XXXXXXX, XXXXXXX, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, XXXXXXX, KC_AP2_BT_UNPAIR,
+    RESET,      XXXXXXX,    XXXXXXX,    XXXXXXX,    _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      KC_MPLY,                  KC_HOME,         KC_END,  XXXXXXX,
+    KC_CAPS,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, KC_MPRV, KC_VOLD, KC_VOLU,       KC_MNXT,      KC_PGUP,                  KC_PGDN,         XXXXXXX,
+    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX,       KC_INS,       KC_DEL,                   XXXXXXX,
+    XXXXXXX,    XXXXXXX,    KC_BRID,    KC_BRIU,    XXXXXXX,    XXXXXXX, MO(_FN), _______
 ),
  /*
-  * Layer _FN_LAYER
+  * Layer _FN
   * ,-----------------------------------------------------------------------------------------.
   * |  `  |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 |  F7 |  F8 |  F9 | F10 | F11 | F12 |  DELETE   |
   * |-----------------------------------------------------------------------------------------+
@@ -166,12 +166,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   * \-----------------------------------------------------------------------------------------/
   *
   */
- [_FN_LAYER] = KEYMAP( /* Base */
-    KC_NO, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
-    KC_NO, KC_NO, KC_NO, KC_NO, MO(_MEDIA_LAYER), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PGUP, KC_PGDN, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_NO,
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, MO(_MEDIA_LAYER)
+ [_FN] = KEYMAP( /* Base */
+    XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, KC_DEL,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(_ML), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR, KC_HOME, KC_END, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGUP, KC_PGDN, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_INS,  KC_DEL,  XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, MO(_ML)
 ),
 };
 const uint16_t keymaps_size = sizeof(keymaps);
@@ -186,7 +186,7 @@ void matrix_scan_user(void) {
 
 void keyboard_post_init_user(void) {
 // if you haven't already and/or you want to enable LEDs by default at startup
-// annepro2LedEnable();
+annepro2LedEnable();
 
 // i is the index of what profile you want to start with
 // annepro2LedSetProfile(i);
