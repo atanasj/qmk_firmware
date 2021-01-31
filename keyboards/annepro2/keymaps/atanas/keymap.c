@@ -12,6 +12,44 @@ enum anne_pro_layers {
   _FN,        /* function layer */
 };
 
+/* /\* tappining term per key *\/ */
+/* uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) { */
+/*     switch (keycode) { */
+/*         case KC_RSPC: */
+/*             return 500; */
+/*         case KC_LSPO: */
+/*             return 500; */
+/*         case LT(_VI, KC_D): */
+/*             return 500; */
+/*         case LT(_MS, KC_E): */
+/*             return 500; */
+/*         default: */
+/*             return TAPPING_TERM; */
+/*     } */
+/* } */
+/* /\* permissive hold per key *\/ */
+/* bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) { */
+/*     switch (keycode) { */
+/*         case LT(_VI, KC_D): */
+/*             return true; */
+/*         case LT(_MS, KC_E): */
+/*             return true; */
+/*         /\* case KC_RSPC: *\/ */
+/*         /\*     return true; *\/ */
+/*         default: */
+/*             return false; */
+/*     } */
+/* } */
+/* /\* ingore mod tap interupt per key *\/ */
+/* bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) { */
+/*     switch (keycode) { */
+/*         case KC_RSPC: */
+/*             return true; */
+/*         default: */
+/*             return false; */
+/*     } */
+/* } */
+
 /* macros */
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
     if (record->event.pressed) {
@@ -57,11 +95,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_BL] = KEYMAP( /* Base */
-    LT(_FN,KC_GRV), KC_1,         KC_2,    KC_3,            KC_4,                KC_5,           KC_6,          KC_7,           KC_8,    KC_9,   KC_0,    KC_MINS, KC_EQL,        KC_BSPC,
-    LCMD_T(KC_TAB), KC_Q,         KC_W,    LT(_MS,KC_E),    LT(_FN2_LAYER,KC_R), KC_T,           KC_Y,          KC_U,           KC_I,    KC_O,   KC_P,    KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
-    LCTL_T(KC_ESC), KC_A,         KC_S,    LT(_VI,KC_D),    KC_F,                KC_G,           KC_H,          KC_J,           KC_K,    KC_L,   KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
-    KC_LSPO,        LT(_NL,KC_Z), KC_X,    KC_C,            KC_V,                KC_B,           KC_N,          KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
-    HYPR_T(KC_F20), KC_LCMD,      KC_LALT, KC_SPC,          LCAG_T(KC_LEFT),     MEH_T(KC_DOWN), LT(_FN,KC_UP), LT(_FN2_LAYER,KC_RIGHT)
+    LT(_FN,KC_GRV), KC_1,    KC_2,    KC_3,            KC_4,            KC_5,           KC_6,          KC_7,           KC_8,    KC_9,   KC_0,    KC_MINS, KC_EQL,        KC_BSPC,
+    LCMD_T(KC_TAB), KC_Q,    KC_W,    LT(_MS,KC_E),    KC_R,            KC_T,           KC_Y,          KC_U,           KC_I,    KC_O,   KC_P,    KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
+    LCTL_T(KC_ESC), KC_A,    KC_S,    LT(_VI,KC_D),    KC_F,            KC_G,           KC_H,          KC_J,           KC_K,    KC_L,   KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
+    KC_LSPO,        KC_Z,    KC_X,    KC_C,            KC_V,            KC_B,           KC_N,          KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
+    HYPR_T(KC_F20), KC_LCMD, KC_LALT, KC_SPC,          LCAG_T(KC_LEFT), MEH_T(KC_DOWN), LT(_FN,KC_UP), LT(_FN2_LAYER,KC_RIGHT)
 ),
   /*
   * Layer _VI
@@ -79,11 +117,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   *
   */
  [_VI] = KEYMAP( /* Base */
-    _______, KC_1,    KC_2,    KC_3,    KC_4,           KC_5,    KC_6,       KC_7,     KC_8,    KC_9,      KC_0,    KC_MINS,       KC_EQL,        KC_BSPC,
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, MO(_FN2_LAYER), MO(_FN), KC_HOME,    KC_PGDN,  KC_PGUP, KC_END,    XXXXXXX, SCMD(KC_LBRC), SCMD(KC_RBRC), XXXXXXX,
-    _______, KC_LALT, KC_LSFT, _______, KC_LCMD,        XXXXXXX, KC_LEFT,    KC_DOWN,  KC_UP,   KC_RIGHT,  KC_F19,  XXXXXXX,       _______,
-    XXXXXXX, MO(_NL), XXXXXXX, XXXXXXX, XXXXXXX,        M_DBW,   A(KC_BSPC), KC_BSPC,  KC_DEL,  A(KC_DEL), M_DFW,   XXXXXXX,
-    _______, _______, _______, _______, LCA(KC_LCMD),   MOD_MEH, MO(_FN),    MO(_FN2_LAYER)
+    _______, KC_1,    KC_2,    KC_3,    KC_4,         KC_5,    KC_6,       KC_7,     KC_8,    KC_9,      KC_0,    KC_MINS,       KC_EQL,        KC_BSPC,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      MO(_FN), KC_HOME,    KC_PGDN,  KC_PGUP, KC_END,    XXXXXXX, SCMD(KC_LBRC), SCMD(KC_RBRC), XXXXXXX,
+    _______, KC_LALT, KC_LSFT, _______, KC_LCMD,      XXXXXXX, KC_LEFT,    KC_DOWN,  KC_UP,   KC_RIGHT,  KC_F19,  XXXXXXX,       _______,
+    XXXXXXX, MO(_NL), XXXXXXX, XXXXXXX, XXXXXXX,      M_DBW,   A(KC_BSPC), KC_BSPC,  KC_DEL,  A(KC_DEL), M_DFW,   XXXXXXX,
+    _______, _______, _______, _______, LCA(KC_LCMD), MOD_MEH, MO(_FN),    MO(_FN2_LAYER)
 ),
   /*
   * Layer _NL

@@ -1,6 +1,6 @@
 # Other featues
 CONSOLE_ENABLE = yes
-COMMAND_ENABLE = yes
+COMMAND_ENABLE = no
 DEBUG_EEPROM = yes
 
 ifeq ($(strip $(BOARD)), ANNEPRO2_C18)
