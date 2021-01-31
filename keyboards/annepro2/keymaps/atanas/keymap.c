@@ -4,51 +4,24 @@
 
 
 enum anne_pro_layers {
-  _BL,        /* base layer */
-  _VI,        /* vi navigation layer */
-  _NL,        /* numpad layer */
-  _MS,        /* mouse layer */
-  _FN2_LAYER, /* media and defualt FN2 layer */
-  _FN,        /* function layer */
+  _BL = 0,        /* base layer */
+  _VI = 1,        /* vi navigation layer */
+  _NL = 2,        /* numpad layer */
+  _MS = 3,        /* mouse layer */
+  _FN2_LAYER = 4, /* media and defualt FN2 layer */
+  _FN = 5,        /* function layer */
 };
 
-/* /\* tappining term per key *\/ */
-/* uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) { */
-/*     switch (keycode) { */
-/*         case KC_RSPC: */
-/*             return 500; */
-/*         case KC_LSPO: */
-/*             return 500; */
-/*         case LT(_VI, KC_D): */
-/*             return 500; */
-/*         case LT(_MS, KC_E): */
-/*             return 500; */
-/*         default: */
-/*             return TAPPING_TERM; */
-/*     } */
-/* } */
-/* /\* permissive hold per key *\/ */
-/* bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) { */
-/*     switch (keycode) { */
-/*         case LT(_VI, KC_D): */
-/*             return true; */
-/*         case LT(_MS, KC_E): */
-/*             return true; */
-/*         /\* case KC_RSPC: *\/ */
-/*         /\*     return true; *\/ */
-/*         default: */
-/*             return false; */
-/*     } */
-/* } */
-/* /\* ingore mod tap interupt per key *\/ */
-/* bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) { */
-/*     switch (keycode) { */
-/*         case KC_RSPC: */
-/*             return true; */
-/*         default: */
-/*             return false; */
-/*     } */
-/* } */
+/* fix space cadet shift */
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case KC_RSFT:
+        perform_space_cadet(record, KC_RSFT, KC_RSFT, KC_0);
+        return false;
+    default:
+        return true; // Process all other keycodes normally
+    }
+}
 
 /* macros */
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
@@ -98,7 +71,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
     LT(_FN,KC_GRV), KC_1,    KC_2,    KC_3,            KC_4,            KC_5,           KC_6,          KC_7,           KC_8,    KC_9,   KC_0,    KC_MINS, KC_EQL,        KC_BSPC,
     LCMD_T(KC_TAB), KC_Q,    KC_W,    LT(_MS,KC_E),    KC_R,            KC_T,           KC_Y,          KC_U,           KC_I,    KC_O,   KC_P,    KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
     LCTL_T(KC_ESC), KC_A,    KC_S,    LT(_VI,KC_D),    KC_F,            KC_G,           KC_H,          KC_J,           KC_K,    KC_L,   KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
-    KC_LSPO,        KC_Z,    KC_X,    KC_C,            KC_V,            KC_B,           KC_N,          KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSPC,
+    KC_LSPO,        KC_Z,    KC_X,    KC_C,            KC_V,            KC_B,           KC_N,          KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSFT,
     HYPR_T(KC_F20), KC_LCMD, KC_LALT, KC_SPC,          LCAG_T(KC_LEFT), MEH_T(KC_DOWN), LT(_FN,KC_UP), LT(_FN2_LAYER,KC_RIGHT)
 ),
   /*
@@ -227,7 +200,7 @@ void keyboard_post_init_user(void) {
 annepro2LedEnable();
 
 // i is the index of what profile you want to start with
-// annepro2LedSetProfile(i);
+annepro2LedSetProfile(1);
 }
 
 layer_state_t layer_state_set_user(layer_state_t layer) {
