@@ -1,7 +1,6 @@
 #undef TAPPING_TERM
 #define TAPPING_TERM 350
 #define PERMISSIVE_HOLD
-#define TAPPING_FORCE_HOLD
 #define RETRO_TAPPING
 
 #define MK_3_SPEED
