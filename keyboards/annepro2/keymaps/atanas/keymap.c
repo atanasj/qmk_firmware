@@ -133,11 +133,11 @@ void l_ctl_reset(qk_tap_dance_state_t *state, void *user_data);
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_BL] = KEYMAP( /* Base */
-    LT(_FN,KC_GRV), KC_1,          KC_2,         KC_3,          KC_4,            KC_5,           KC_6,                        KC_7,           KC_8,    KC_9,   KC_0,    KC_MINS, KC_EQL,        LT(_FN2_LAYER,KC_BSPC),
-    TD(L_CMD),      KC_Q,          KC_W,         LT(_MS,KC_E),  KC_R,            KC_T,           KC_Y,                        KC_U,           KC_I,    KC_O,   KC_P,    KC_LBRC, KC_RBRC,       TD(R_CMD),
-    LCTL_T(KC_ESC), KC_A,          KC_S,         LT(_VI,KC_D),  KC_F,            KC_G,           KC_H,                        KC_J,           KC_K,    KC_L,   KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
-    KC_LSPO,        KC_Z,          KC_X,         KC_C,          KC_V,            KC_B,           KC_N,                        KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSFT,
-    HYPR_T(KC_F20), TD(SUPER_SPC), TD(META_SPC), ALT_T(KC_SPC), LCAG_T(KC_LEFT), MEH_T(KC_DOWN), MT(MOD_LGUI|MOD_LCTL,KC_UP), SGUI_T(KC_RIGHT)
+    LT(_FN,KC_GRV), KC_1,                         KC_2,                         KC_3,          KC_4,            KC_5,           KC_6,                        KC_7,           KC_8,    KC_9,   KC_0,    KC_MINS, KC_EQL,        LT(_FN2_LAYER,KC_BSPC),
+    LCMD_T(KC_TAB), KC_Q,                         KC_W,                         LT(_MS,KC_E),  KC_R,            KC_T,           KC_Y,                        KC_U,           KC_I,    KC_O,   KC_P,    KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
+    LCTL_T(KC_ESC), KC_A,                         KC_S,                         LT(_VI,KC_D),  KC_F,            KC_G,           KC_H,                        KC_J,           KC_K,    KC_L,   KC_SCLN, KC_QUOT, RCTL_T(KC_ENT),
+    KC_LSPO,        KC_Z,                         KC_X,                         KC_C,          KC_V,            KC_B,           KC_N,                        KC_M,           KC_COMM, KC_DOT, KC_SLSH, KC_RSFT,
+    HYPR_T(KC_F20), MT(MOD_LGUI|MOD_LCTL,KC_ESC), MT(MOD_LGUI|MOD_LALT,KC_SPC), ALT_T(KC_SPC), LCAG_T(KC_LEFT), MEH_T(KC_DOWN), MT(MOD_LGUI|MOD_LCTL,KC_UP), SGUI_T(KC_RIGHT)
 ),
 
   /* VI layer */
