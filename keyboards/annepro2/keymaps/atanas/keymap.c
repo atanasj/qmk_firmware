@@ -60,29 +60,39 @@ enum {
 // NOTE many are not used as the mod-tap functionality does not allow permissive
 // hold and is laggy to use
 enum {
+    META_DOWN,
+    SUPER_UP,
     X_CTL,
     SL_HLP,
-    S_SAVE,
+    O_SAVE,
     Z_UNDO,
-    META_SPC,
-    SUPER_SPC,
-    R_CTL,
-    L_CTL,
-    R_CMD,
-    L_CMD
+    I_SLCT,
+    X_CCUT,
+    C_COPY,
+    V_PSTE,
+    W_WIND,
+    F_FIND,
+    Q_QAPP,
+    N_NNEW
+    /* R_CTL, */
+    /* L_CTL, */
+    /* R_CMD, */
+    /* L_CMD */
 };
 
 uint8_t cur_dance(qk_tap_dance_state_t *state);
 
 // For the x tap dance. Put it here so it can be used in any keymap
+void cut_finished(qk_tap_dance_state_t *state, void *user_data);
+void cut_reset(qk_tap_dance_state_t *state, void *user_data);
 void x_finished(qk_tap_dance_state_t *state, void *user_data);
 void x_reset(qk_tap_dance_state_t *state, void *user_data);
 void meta_finished(qk_tap_dance_state_t *state, void *user_data);
 void meta_reset(qk_tap_dance_state_t *state, void *user_data);
-void r_ctl_finished(qk_tap_dance_state_t *state, void *user_data);
-void r_ctl_reset(qk_tap_dance_state_t *state, void *user_data);
-void l_ctl_finished(qk_tap_dance_state_t *state, void *user_data);
-void l_ctl_reset(qk_tap_dance_state_t *state, void *user_data);
+/* void r_ctl_finished(qk_tap_dance_state_t *state, void *user_data); */
+/* void r_ctl_reset(qk_tap_dance_state_t *state, void *user_data); */
+/* void l_ctl_finished(qk_tap_dance_state_t *state, void *user_data); */
+/* void l_ctl_reset(qk_tap_dance_state_t *state, void *user_data); */
 
 
 /* tapping term per key */
@@ -94,22 +104,20 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         return 275;
     case LT(_VI,KC_D):
         return 275;
-    /* case SL_HLP: */
-    /*     return 25; */
     case RCTL_T(KC_ENT):
         return 350;
-    case META_SPC:
-        return 200;
-    case SUPER_SPC:
-        return 200;
-    case L_CTL:
-        return 200;
-    case L_CMD:
-        return 200;
-    case R_CTL:
-        return 200;
-    case R_CMD:
-        return 200;
+    /* case META_DOWN: */
+    /*     return 200; */
+    /* case SUPER_UP: */
+    /*     return 200; */
+    /* case L_CTL: */
+    /*     return 200; */
+    /* case L_CMD: */
+    /*     return 200; */
+    /* case R_CTL: */
+    /*     return 200; */
+    /* case R_CMD: */
+    /*     return 200; */
     default:
         return TAPPING_TERM;
     }
@@ -153,20 +161,20 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_BL] = KEYMAP( /* Base */
-    LT(_FN,KC_GRV), KC_1,                         KC_2,                         KC_3,          KC_4,            KC_5,           KC_6,                                 KC_7,           KC_8,    KC_9,   KC_0,     KC_MINS, KC_EQL,        LT(_FN2_LAYER,KC_BSPC),
-    LCMD_T(KC_TAB), KC_Q,                         KC_W,                         LT(_MS,KC_E),  KC_R,            KC_T,           KC_Y,                                 KC_U,           KC_I,    KC_O,   KC_P,     KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
-    LCTL_T(KC_ESC), KC_A,                         TD(S_SAVE),                     LT(_VI,KC_D),  KC_F,            KC_G,           KC_H,                                 KC_J,           KC_K,    KC_L,   KC_SCLN,  KC_QUOT, RCTL_T(KC_ENT),
-    KC_LSPO,        TD(Z_UNDO),                     KC_X,                         KC_C,          KC_V,            KC_B,           KC_N,                                 KC_M,           KC_COMM, KC_DOT, TD(SL_HLP), KC_RSFT,
-    HYPR_T(KC_F20), MT(MOD_LGUI|MOD_LCTL,KC_ESC), MT(MOD_LGUI|MOD_LALT,KC_SPC), ALT_T(KC_SPC), LCAG_T(KC_LEFT), MEH_T(KC_DOWN), MT(MOD_LGUI|MOD_LCTL|MOD_LSFT,KC_UP), SGUI_T(KC_RIGHT)
+    LT(_FN,KC_GRV), KC_1,                         KC_2,                         KC_3,          KC_4,            KC_5,          KC_6,         KC_7,           KC_8,    KC_9,   KC_0,       KC_MINS, KC_EQL,        LT(_FN2_LAYER,KC_BSPC),
+    LCMD_T(KC_TAB), KC_Q,                         KC_W,                         LT(_MS,KC_E),  KC_R,            KC_T,          KC_Y,         KC_U,           KC_I,    KC_O,   KC_P,       KC_LBRC, KC_RBRC,       RCMD_T(KC_BSLS),
+    LCTL_T(KC_ESC), KC_A,                         KC_S,                         LT(_VI,KC_D),  KC_F,            KC_G,          KC_H,         KC_J,           KC_K,    KC_L,   KC_SCLN,    KC_QUOT, RCTL_T(KC_ENT),
+    KC_LSPO,        KC_Z,                         KC_X,                         KC_C,          KC_V,            KC_B,          KC_N,         KC_M,           KC_COMM, KC_DOT, TD(SL_HLP), KC_RSFT,
+    HYPR_T(KC_F20), MT(MOD_LGUI|MOD_LCTL,KC_ESC), MT(MOD_LGUI|MOD_LALT,KC_SPC), ALT_T(KC_SPC), LCAG_T(KC_LEFT), TD(META_DOWN), TD(SUPER_UP), SGUI_T(KC_RIGHT)
 ),
 
   /* VI layer */
 
  [_VI] = KEYMAP( /* Base */
-    _______, _______, _______, _______, _______, _______, _______,    _______,  _______, _______,   _______, _______,       _______,       KC_LEAD,
+    _______, _______, _______, _______, _______, _______, _______,    _______,  _______, _______,   _______, _______,       _______,       _______,
     _______, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX, KC_HOME,    KC_PGDN,  KC_PGUP, KC_END,    XXXXXXX, SCMD(KC_LBRC), SCMD(KC_RBRC), XXXXXXX,
     _______, KC_LALT, KC_LSFT, _______, KC_LCMD, XXXXXXX, KC_LEFT,    KC_DOWN,  KC_UP,   KC_RIGHT,  KC_F19,  KC_CAPS,       _______,
-    XXXXXXX, MO(_NL), _______, _______, _______, M_DBW,   A(KC_BSPC), KC_BSPC,  KC_DEL,  A(KC_DEL), M_DFW,   XXXXXXX,
+    XXXXXXX, MO(_NL), _______, _______, _______, M_DBW,   A(KC_BSPC), KC_BSPC,  KC_DEL,  A(KC_DEL), M_DFW,   KC_LEAD,
     _______, _______, _______, _______, _______, _______, _______,    _______
 ),
 
@@ -175,7 +183,7 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
  [_NL] = KEYMAP( /* Base */
     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
     XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    KC_EQL,  XXXXXXX, XXXXXXX, XXXXXXX,
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PDOT, KC_4,    KC_5,    KC_6,    KC_MINS, XXXXXXX, XXXXXXX,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PDOT, KC_4,    KC_5,    KC_6,    KC_MINS, XXXXXXX, _______,
     KC_LSFT, _______, KC_LALT, XXXXXXX, KC_LSFT, XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    KC_SLSH, XXXXXXX,
     XXXXXXX, XXXXXXX, _______, KC_0,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
  ),
@@ -268,6 +276,113 @@ uint8_t cur_dance(qk_tap_dance_state_t *state) {
     } else return 8; // Magic number. At some point this method will expand to work for more presses
 }
 
+// Create an instance of 'tap' for the 'meta' tap dance.
+static tap meta_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void meta_finished(qk_tap_dance_state_t *state, void *user_data) {
+    meta_tap_state.state = cur_dance(state);
+    switch (meta_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_DOWN);
+        break;
+    case SINGLE_HOLD:
+        register_code(KC_LSFT);
+        register_code(KC_LALT);
+        break;
+    /* case DOUBLE_TAP: */
+    /*     tap_code(KC_DOWN); */
+    /*     register_code(KC_DOWN); */
+    /*     break; */
+    case DOUBLE_HOLD:
+        register_code(KC_LSFT);
+        register_code(KC_LALT);
+        register_code(KC_LGUI);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_DOWN);
+        register_code(KC_DOWN);
+    }
+}
+
+void meta_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (meta_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_DOWN);
+        break;
+    case SINGLE_HOLD:
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LALT);
+        break;
+    /* case DOUBLE_TAP: */
+    /*     unregister_code(KC_DOWN); */
+    /*     break; */
+    case DOUBLE_HOLD:
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LALT);
+        unregister_code(KC_LGUI);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_DOWN);
+    }
+    meta_tap_state.state = 0;
+}
+
+// Create an instance of 'tap' for the 'meta' tap dance.
+static tap super_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void super_finished(qk_tap_dance_state_t *state, void *user_data) {
+    super_tap_state.state = cur_dance(state);
+    switch (super_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_UP);
+        break;
+    case SINGLE_HOLD:
+        register_code(KC_LSFT);
+        register_code(KC_LCTL);
+        break;
+    /* case DOUBLE_TAP: */
+    /*     tap_code(KC_UP); */
+    /*     register_code(KC_UP); */
+    /*     break; */
+    case DOUBLE_HOLD:
+        register_code(KC_LSFT);
+        register_code(KC_LCTL);
+        register_code(KC_LGUI);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_UP);
+        register_code(KC_UP);
+    }
+}
+
+void super_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (super_tap_state.state) {
+    case SINGLE_TAP: unregister_code(KC_UP); break;
+    case SINGLE_HOLD:
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LCTL);
+        break;
+    /* case DOUBLE_TAP: */
+    /*     unregister_code(KC_DOWN); */
+    /*     break; */
+    case DOUBLE_HOLD:
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LCTL);
+        unregister_code(KC_LGUI);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_UP);
+    }
+    super_tap_state.state = 0;
+}
+
+
 // Create an instance of 'tap' for the 'x' tap dance.
 static tap xtap_state = {
     .is_press_action = true,
@@ -316,14 +431,6 @@ void help_finished(qk_tap_dance_state_t *state, void *user_data) {
         register_code(KC_LCMD);
         register_code(KC_LSFT);
         register_code(KC_SLSH);
-        /* break; */
-        /* case DOUBLE_HOLD: register_code(KC_LALT); break; */
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-    /* case DOUBLE_SINGLE_TAP: */
-    /*     tap_code(KC_SLSH); */
-    /*     register_code(KC_SLSH); */
     }
 }
 
@@ -337,13 +444,6 @@ void help_reset(qk_tap_dance_state_t *state, void *user_data) {
         unregister_code(KC_LCMD);
         unregister_code(KC_LSFT);
         unregister_code(KC_SLSH);
-        /* break; */
-        /* case DOUBLE_HOLD: unregister_code(KC_LALT); break; */
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-    /* case DOUBLE_SINGLE_TAP: */
-    /*     unregister_code(KC_SLSH); */
     }
     help_tap_state.state = 0;
 }
@@ -359,7 +459,7 @@ void save_finished(qk_tap_dance_state_t *state, void *user_data) {
     save_tap_state.state = cur_dance(state);
     switch (save_tap_state.state) {
     case SINGLE_TAP:
-        register_code(KC_S);
+        register_code(KC_0);
         break;
     case DOUBLE_TAP:
         register_code(KC_LCMD);
@@ -367,22 +467,22 @@ void save_finished(qk_tap_dance_state_t *state, void *user_data) {
         break;
         /* below important for words like session, which I use a lot */
     case DOUBLE_SINGLE_TAP:
-        tap_code(KC_S);
-        register_code(KC_S);
+        tap_code(KC_0);
+        register_code(KC_0);
     }
 }
 
 void save_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (save_tap_state.state) {
     case SINGLE_TAP:
-        unregister_code(KC_S);
+        unregister_code(KC_0);
         break;
     case DOUBLE_TAP:
         unregister_code(KC_LCMD);
         unregister_code(KC_S);
         break;
     case DOUBLE_SINGLE_TAP:
-        unregister_code(KC_S);
+        unregister_code(KC_0);
     }
     save_tap_state.state = 0;
 }
@@ -425,349 +525,380 @@ void undo_reset(qk_tap_dance_state_t *state, void *user_data) {
     undo_tap_state.state = 0;
 }
 
-// Create an instance of 'tap' for the 'meta' tap dance.
-static tap meta_tap_state = {
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap select_tap_state = {
     .is_press_action = true,
     .state = 0
 };
 
-void meta_finished(qk_tap_dance_state_t *state, void *user_data) {
-    meta_tap_state.state = cur_dance(state);
-    switch (meta_tap_state.state) {
+void select_finished(qk_tap_dance_state_t *state, void *user_data) {
+    select_tap_state.state = cur_dance(state);
+    switch (select_tap_state.state) {
     case SINGLE_TAP:
-        register_code(KC_SPC);
-        break;
-    case SINGLE_HOLD:
-        register_code(KC_LGUI);
-        register_code(KC_LALT);
+        register_code(KC_1);
         break;
     case DOUBLE_TAP:
-        register_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        register_code(KC_LSFT);
-        register_code(KC_LGUI);
-        register_code(KC_LALT);
-        break;
-    case DOUBLE_SINGLE_TAP: tap_code(KC_SPC); register_code(KC_SPC);
-    }
-}
-
-void meta_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (meta_tap_state.state) {
-    case SINGLE_TAP:
-        unregister_code(KC_SPC);
-        break;
-    case SINGLE_HOLD:
-        unregister_code(KC_LGUI);
-        unregister_code(KC_LALT);
-        break;
-    case DOUBLE_TAP:
-        unregister_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_LGUI);
-        unregister_code(KC_LALT);
-        break;
-    case DOUBLE_SINGLE_TAP:
-        unregister_code(KC_SPC);
-    }
-    meta_tap_state.state = 0;
-}
-
-// Create an instance of 'tap' for the 'meta' tap dance.
-static tap super_tap_state = {
-    .is_press_action = true,
-    .state = 0
-};
-
-void super_finished(qk_tap_dance_state_t *state, void *user_data) {
-    super_tap_state.state = cur_dance(state);
-    switch (super_tap_state.state) {
-    case SINGLE_TAP:
-        register_code(KC_SPC);
-        break;
-    case SINGLE_HOLD:
-        register_code(KC_LGUI);
-        register_code(KC_LCTL);
-        break;
-    case DOUBLE_TAP:
-        register_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        register_code(KC_LSFT);
-        register_code(KC_LGUI);
-        register_code(KC_LCTL);
-        break;
-    case DOUBLE_SINGLE_TAP:
-        tap_code(KC_SPC);
-        register_code(KC_SPC);
-    }
-}
-
-void super_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (super_tap_state.state) {
-    case SINGLE_TAP: unregister_code(KC_SPC); break;
-    case SINGLE_HOLD:
-        unregister_code(KC_LGUI);
-        unregister_code(KC_LCTL);
-        break;
-    case DOUBLE_TAP:
-        unregister_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_LGUI);
-        unregister_code(KC_LCTL);
-        break;
-    case DOUBLE_SINGLE_TAP:
-        unregister_code(KC_SPC);
-    }
-    super_tap_state.state = 0;
-}
-
-// Create an instance of 'tap' for the 'meta' tap dance.
-static tap r_ctl_tap_state = {
-    .is_press_action = true,
-    .state = 0
-};
-
-void r_ctl_finished(qk_tap_dance_state_t *state, void *user_data) {
-    r_ctl_tap_state.state = cur_dance(state);
-    switch (r_ctl_tap_state.state) {
-    case SINGLE_TAP: register_code(KC_ENT); break;
-    case SINGLE_HOLD:
-        register_code(KC_RCTL);
-        break;
-    case DOUBLE_TAP:
-        tap_code(KC_ENT);
-        register_code(KC_ENT);
-        break;
-    case DOUBLE_HOLD:
-        register_code(KC_RSFT);
-        register_code(KC_RCTL);
-        break;
-    case DOUBLE_SINGLE_TAP:
-        tap_code(KC_ENT);
-        register_code(KC_ENT);
-    }
-}
-
-void r_ctl_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (r_ctl_tap_state.state) {
-    case SINGLE_TAP:
-        unregister_code(KC_ENT);
-        break;
-    case SINGLE_HOLD:
-        unregister_code(KC_RCTL);
-        break;
-    case DOUBLE_TAP:
-        unregister_code(KC_ENT);
-        break;
-    case DOUBLE_HOLD:
-        unregister_code(KC_RSFT);
-        unregister_code(KC_RCTL);
-        /* break; */
-    case DOUBLE_SINGLE_TAP: unregister_code(KC_ENT);
-    }
-    r_ctl_tap_state.state = 0;
-}
-
-
-// Create an instance of 'tap' for the 'meta' tap dance.
-static tap l_ctl_tap_state = {
-    .is_press_action = true,
-    .state = 0
-};
-
-void l_ctl_finished(qk_tap_dance_state_t *state, void *user_data) {
-    l_ctl_tap_state.state = cur_dance(state);
-    switch (l_ctl_tap_state.state) {
-    case SINGLE_TAP: register_code(KC_ESC); break;
-    case SINGLE_HOLD:
-        register_code(KC_LCTL);
-        break;
-    case DOUBLE_TAP:
-        tap_code(KC_ESC);
-        register_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        register_code(KC_LSFT);
-        register_code(KC_LCTL);
-        break;
-    case DOUBLE_SINGLE_TAP:
-        tap_code(KC_ESC);
-        register_code(KC_ESC);
-    }
-}
-
-void l_ctl_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (l_ctl_tap_state.state) {
-    case SINGLE_TAP:
-        unregister_code(KC_ESC);
-        break;
-    case SINGLE_HOLD:
-        unregister_code(KC_LCTL);
-        break;
-    case DOUBLE_TAP:
-        unregister_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_LCTL);
-        /* break; */
-    case DOUBLE_SINGLE_TAP: unregister_code(KC_ESC);
-    }
-    l_ctl_tap_state.state = 0;
-}
-
-
-// Create an instance of 'tap' for the 'meta' tap dance.
-static tap r_cmd_tap_state = {
-    .is_press_action = true,
-    .state = 0
-};
-
-void r_cmd_finished(qk_tap_dance_state_t *state, void *user_data) {
-    r_cmd_tap_state.state = cur_dance(state);
-    switch (r_cmd_tap_state.state) {
-    case SINGLE_TAP: register_code(KC_BSLS); break;
-    case SINGLE_HOLD:
-        register_mods(MOD_BIT(KC_RCMD));
-        break;
-    case DOUBLE_TAP:
-        register_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        register_mods(MOD_BIT(KC_RSFT));
-        register_mods(MOD_BIT(KC_RCMD));
-        break;
-    case DOUBLE_SINGLE_TAP:
-        tap_code(KC_BSLS);
-        register_code(KC_BSLS);
-    }
-}
-
-void r_cmd_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (r_cmd_tap_state.state) {
-    case SINGLE_TAP: unregister_code(KC_BSLS); break;
-    case SINGLE_HOLD:
-        unregister_mods(MOD_BIT(KC_RCMD));
-        break;
-    case DOUBLE_TAP:
-        unregister_code(KC_ESC);
-        break;
-    case DOUBLE_HOLD:
-        unregister_mods(MOD_BIT(KC_RSFT));
-        unregister_mods(MOD_BIT(KC_RCMD));
-        break;
-    case DOUBLE_SINGLE_TAP:
-        unregister_code(KC_BSLS);
-    }
-    r_cmd_tap_state.state = 0;
-}
-
-
-// Create an instance of 'tap' for the 'meta' tap dance.
-static tap l_cmd_tap_state = {
-    .is_press_action = true,
-    .state = 0
-};
-
-void l_cmd_finished(qk_tap_dance_state_t *state, void *user_data) {
-    l_cmd_tap_state.state = cur_dance(state);
-    switch (l_cmd_tap_state.state) {
-    case SINGLE_TAP: register_code(KC_TAB); break;
-    case SINGLE_HOLD:
         register_code(KC_LCMD);
-        break;
-    case DOUBLE_TAP:
-        tap_code(KC_TAB);
-        register_code(KC_TAB);
-        break;
-    case DOUBLE_HOLD:
-        register_code(KC_LSFT);
-        register_code(KC_LCMD);
+        register_code(KC_A);
         break;
     case DOUBLE_SINGLE_TAP:
-        tap_code(KC_TAB);
-        register_code(KC_TAB);
+        tap_code(KC_1);
+        register_code(KC_1);
     }
 }
 
-void l_cmd_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (l_cmd_tap_state.state) {
-    case SINGLE_TAP: unregister_code(KC_TAB); break;
-    case SINGLE_HOLD:
-        unregister_code(KC_LCMD);
+void select_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (select_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_1);
         break;
     case DOUBLE_TAP:
-        unregister_code(KC_TAB);
-        break;
-    case DOUBLE_HOLD:
-        unregister_code(KC_LSFT);
         unregister_code(KC_LCMD);
+        unregister_code(KC_A);
         break;
     case DOUBLE_SINGLE_TAP:
-        unregister_code(KC_TAB);
+        unregister_code(KC_1);
     }
-    l_cmd_tap_state.state = 0;
+    select_tap_state.state = 0;
 }
+
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap cut_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void cut_finished(qk_tap_dance_state_t *state, void *user_data) {
+    cut_tap_state.state = cur_dance(state);
+    switch (cut_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_X);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_X);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_X);
+        register_code(KC_X);
+    }
+}
+
+void cut_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (cut_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_X);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_X);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_X);
+    }
+    cut_tap_state.state = 0;
+}
+
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap copy_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void copy_finished(qk_tap_dance_state_t *state, void *user_data) {
+    copy_tap_state.state = cur_dance(state);
+    switch (copy_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_C);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_C);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_C);
+        register_code(KC_C);
+    }
+}
+
+void copy_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (copy_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_C);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_C);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_C);
+    }
+    copy_tap_state.state = 0;
+}
+
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap pst_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void pst_finished(qk_tap_dance_state_t *state, void *user_data) {
+    pst_tap_state.state = cur_dance(state);
+    switch (pst_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_V);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_V);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_V);
+        register_code(KC_V);
+    }
+}
+
+void pst_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (pst_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_V);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_V);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_V);
+    }
+    pst_tap_state.state = 0;
+}
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap wind_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void wind_finished(qk_tap_dance_state_t *state, void *user_data) {
+    wind_tap_state.state = cur_dance(state);
+    switch (wind_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_W);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_W);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_W);
+        register_code(KC_W);
+    }
+}
+
+void wind_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (wind_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_W);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_W);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_W);
+    }
+    wind_tap_state.state = 0;
+}
+
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap find_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void find_finished(qk_tap_dance_state_t *state, void *user_data) {
+    find_tap_state.state = cur_dance(state);
+    switch (find_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_F);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_F);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_F);
+        register_code(KC_F);
+    }
+}
+
+void find_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (find_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_F);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_F);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_F);
+    }
+    find_tap_state.state = 0;
+}
+
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap qapp_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void qapp_finished(qk_tap_dance_state_t *state, void *user_data) {
+    qapp_tap_state.state = cur_dance(state);
+    switch (qapp_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_Q);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_Q);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_Q);
+        register_code(KC_Q);
+    }
+}
+
+void qapp_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (qapp_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_Q);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_Q);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_Q);
+    }
+    qapp_tap_state.state = 0;
+}
+
+
+// Create an instance of 'tap' for the 'x' tap dance.
+static tap nnew_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void nnew_finished(qk_tap_dance_state_t *state, void *user_data) {
+    nnew_tap_state.state = cur_dance(state);
+    switch (nnew_tap_state.state) {
+    case SINGLE_TAP:
+        register_code(KC_N);
+        break;
+    case DOUBLE_TAP:
+        register_code(KC_LCMD);
+        register_code(KC_N);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        tap_code(KC_N);
+        register_code(KC_N);
+    }
+}
+
+void nnew_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (nnew_tap_state.state) {
+    case SINGLE_TAP:
+        unregister_code(KC_N);
+        break;
+    case DOUBLE_TAP:
+        unregister_code(KC_LCMD);
+        unregister_code(KC_N);
+        break;
+    case DOUBLE_SINGLE_TAP:
+        unregister_code(KC_N);
+    }
+    nnew_tap_state.state = 0;
+}
+
+
 
 qk_tap_dance_action_t tap_dance_actions[] = {
+    [META_DOWN] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, meta_finished, meta_reset, 175),
+    [SUPER_UP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, super_finished, super_reset, 175),
     [X_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, x_finished, x_reset),
     /* NOTE in newer qmk firmware `_TIME` suffix function is depracted, use TAPPING_TERM_PER_KEY instead */
-    [SL_HLP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, help_finished, help_reset, 175),
-    [S_SAVE] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, save_finished, save_reset, 175),
+    [SL_HLP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, help_finished, help_reset, 150),
     [Z_UNDO] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, undo_finished, undo_reset, 175),
-    [META_SPC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, meta_finished, meta_reset),
-    [SUPER_SPC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, super_finished, super_reset),
-    [R_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, r_ctl_finished, r_ctl_reset),
-    [L_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, l_ctl_finished, l_ctl_reset),
-    [R_CMD] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, r_cmd_finished, r_cmd_reset),
-    [L_CMD] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, l_cmd_finished, l_cmd_reset)
+    [O_SAVE] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, save_finished, save_reset, 175),
+    [I_SLCT] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, select_finished, select_reset, 175),
+    [X_CCUT] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, cut_finished, cut_reset, 175),
+    [C_COPY] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, copy_finished, copy_reset, 120),
+    [V_PSTE] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, pst_finished, pst_reset, 175),
+    [W_WIND] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, wind_finished, wind_reset, 130),
+    [F_FIND] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, find_finished, find_reset, 120),
+    [Q_QAPP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, qapp_finished, qapp_reset, 150),
+    [N_NNEW] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, nnew_finished, nnew_reset, 120)
+
 };
 
 /* leader key */
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
-  LEADER_DICTIONARY() {
-    leading = false;
-    leader_end();
-
-    // Replace the sequences below with your own sequences.
-    SEQ_ONE_KEY(KC_T) {
-      // When I press KC_LEAD and then T, this sends CTRL + SHIFT + T
-      /* SEND_STRING(SS_LCTRL(SS_LSFT("t"))); */
-      SEND_STRING("FM Susan");
+    LEADER_DICTIONARY() {
+        leading = false;
+        leader_end();
+        SEQ_ONE_KEY(KC_A) {
+            SEND_STRING(SS_LGUI("a"));
+        }
+        SEQ_ONE_KEY(KC_C) {
+            SEND_STRING(SS_LGUI("c"));
+        }
+        SEQ_ONE_KEY(KC_O) {
+            SEND_STRING(SS_LGUI("o"));
+        }
+        SEQ_ONE_KEY(KC_V) {
+            SEND_STRING(SS_LGUI("v"));
+        }
+        SEQ_ONE_KEY(KC_X) {
+            SEND_STRING(SS_LGUI("x"));
+        }
+        SEQ_ONE_KEY(KC_S) {
+            SEND_STRING(SS_LGUI("s"));
+        }
+        SEQ_TWO_KEYS(KC_S, KC_S) {
+            SEND_STRING(SS_LSFT(SS_LGUI("s")));
+        }
+        SEQ_ONE_KEY(KC_H) {
+            SEND_STRING(SS_LSFT(SS_LGUI("/")));
+        }
+        SEQ_ONE_KEY(KC_F) {
+            SEND_STRING(SS_LGUI("f"));
+        }
+        SEQ_TWO_KEYS(KC_F, KC_F) {
+            SEND_STRING(SS_LSFT(SS_LGUI("f")));
+        }
+        SEQ_TWO_KEYS(KC_W, KC_W) {
+            SEND_STRING(SS_LGUI("w"));
+        }
+        SEQ_TWO_KEYS(KC_Q, KC_Q) {
+            SEND_STRING(SS_LGUI("q"));
+        }
+        SEQ_ONE_KEY(KC_Z) {
+            SEND_STRING(SS_LGUI("z"));
+        }
+        SEQ_TWO_KEYS(KC_Z, KC_Z) {
+            SEND_STRING(SS_LSFT(SS_LGUI("z")));
+        }
     }
-    SEQ_ONE_KEY(KC_H) {
-      // When I press KC_LEAD and then T, this sends CTRL + SHIFT + T
-      /* SEND_STRNG(SS_LCTRL(SS_LSFT("t"))); */
-      SEND_STRING(SS_LSFT(SS_LGUI("/")));
-    }
-    // Note: This is not an array, you don't need to put any commas
-    // or semicolons between sequences.
-    // kill window
-    SEQ_TWO_KEYS(KC_K, KC_W) {
-      SEND_STRING(SS_LGUI("w"));
-    }
-    // kill app
-    SEQ_TWO_KEYS(KC_K, KC_A) {
-      SEND_STRING(SS_LGUI("q"));
-    }
-    // sleep screen
-    SEQ_TWO_KEYS(KC_K, KC_S) {
-      SEND_STRING(SS_LGUI(SS_LCTL("q")));
-    }
-    SEQ_TWO_KEYS(KC_N, KC_T) {
-      // When I press KC_LEAD and then N followed by T, this sends CTRL + T
-      SEND_STRING("I don't mind if I do, my dear. Just singing in the rain.");
-      /* SEND_STRING(SS_LCTRL("t")); */
-    }
-  }
 }
 
 void keyboard_post_init_user(void) {
