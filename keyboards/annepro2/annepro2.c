@@ -29,23 +29,43 @@ uint16_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS] = {
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
 
+void OVERRIDE bootloader_jump(void) {
+
+    // Send msg to shine to boot into IAP
+    sdPut(&SD0, CMD_LED_IAP);
+
+    // wait for shine to boot into IAP
+    wait_ms(15);
+
+    // Load ble into IAP
+    annepro2_ble_bootload();
+    wait_ms(15);
+
+    // Magic key to set keyboard to IAP
+    *((uint32_t*)0x20001ffc) = 0x0000fab2;
+
+    // Load the main MCU into IAP
+    __disable_irq();
+    NVIC_SystemReset();
+}
+
 void OVERRIDE keyboard_pre_init_kb(void) {
 #if HAL_USE_SPI == TRUE
     spi_init();
 #endif
-}
-
-void OVERRIDE keyboard_post_init_kb(void) {
     // Start LED UART
     sdStart(&SD0, &ledUartConfig);
     sdWrite(&SD0, ledMcuWakeup, 11);
-
     // wait to receive response from wakeup
     wait_ms(15);
 
     // loop to clear out receive buffer from shine wakeup
     while(!sdGetWouldBlock(&SD0))
         sdGet(&SD0);
+}
+
+void OVERRIDE keyboard_post_init_kb(void) {
+
 
     // Start BLE UART
     sdStart(&SD1, &bleUartConfig);
@@ -89,7 +109,7 @@ void matrix_scan_kb() {
  */
 bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
-        if (AP2_LED_ENABLED && AP2_LED_DYNAMIC_PROFILE) {
+        if (AP2_LED_ENABLED && AP2_LED_DYNAMIC_PROFILE && !AP2_FOREGROUND_COLOR_SET) {
             annepro2LedForwardKeypress(record->event.key.row, record->event.key.col);
         }
 
@@ -146,6 +166,7 @@ bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_AP_LED_SPEED:
                 annepro2LedNextAnimationSpeed();
                 return false;
+
             default:
                 break;
         }
