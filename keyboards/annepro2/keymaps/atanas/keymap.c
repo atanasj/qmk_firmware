@@ -12,16 +12,49 @@ enum anne_pro_layers {
   _FN2_LAYER = 5, /* defualt FN2 layer */
 };
 
+enum macros {
+    SUSPEND = AP2_SAFE_RANGE
+};
+
 /* fix space cadet shift */
+/* bool process_record_user(uint16_t keycode, keyrecord_t *record) { */
+/*     switch (keycode) { */
+/*     case KC_RSFT: */
+/*         /\* only right because LT() on left alphas *\/ */
+/*         perform_space_cadet(record, KC_RSPC, KC_RSFT, KC_RSFT, KC_0); */
+/*         return false; */
+/*     default: */
+/*         return true; // Process all other keycodes normally */
+/*     } */
+/* } */
+
+// Track led status
+bool is_led_on = true;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
     case KC_RSFT:
         /* only right because LT() on left alphas */
-        perform_space_cadet(record, KC_RSFT, KC_RSFT, KC_0);
+        perform_space_cadet(record, KC_RSPC, KC_RSFT, KC_RSFT, KC_0);
         return false;
+    case SUSPEND:
+        if (record->event.pressed) {
+            if(is_led_on) {
+                is_led_on = false;
+                annepro2LedDisable();
+                SEND_STRING(SS_LCTL(SS_LSFT(SS_TAP(X_ESC))));
+            }
+        }
+        return true;
     default:
-        return true; // Process all other keycodes normally
+        if (record->event.pressed) {
+            if(!is_led_on) {
+                is_led_on = true;
+                annepro2LedEnable();
+            }
+        }
     }
+    return true;
 }
 
 /* macros */
@@ -132,6 +165,8 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 }
+
+#define CAPS_LOCATION (MATRIX_COLS * 2 + 0)
 
 /*
 * Layer _BL
@@ -902,13 +937,71 @@ void matrix_scan_user(void) {
 }
 
 void keyboard_post_init_user(void) {
-// if you haven't already and/or you want to enable LEDs by default at startup
 annepro2LedEnable();
-
-// i is the index of what profile you want to start with
-annepro2LedSetProfile(10);
+// white
+/* annepro2LedSetProfile(0); */
+/* rainbow */
+annepro2LedSetProfile(11);
 }
 
 layer_state_t layer_state_set_user(layer_state_t layer) {
+    switch(get_highest_layer(layer)) {
+    case _VI:
+        // Set the leds to green
+        annepro2LedSetProfile(0);
+        break;
+    case _NL:
+        // Set the leds to green
+        annepro2LedSetProfile(1);
+        break;
+    case _MS:
+        // Set the leds to blue
+        annepro2LedSetProfile(2);
+        break;
+    case _FN:
+        // Set the leds to orange
+        annepro2LedSetProfile(3);
+        break;
+    case _FN2_LAYER:
+        // Set the leds to orange
+        annepro2LedSetProfile(4);
+        break;
+    default:
+        // Reset back to the current profile
+        annepro2LedSetProfile(11);
+        break;
+    }
     return layer;
 }
+
+// The function to handle the caps lock logic
+// We use a state to avoid clearing the background if capslock was not set
+// somehow it leads to flickering with fn1 and fn1 in tap mode.
+bool is_caps_on = false;
+bool led_update_user(led_t leds) {
+    if (leds.caps_lock) {
+        // Set the leds to red
+        is_caps_on = true;
+        annepro2LedSetForegroundColor(0xFF, 0x00, 0x00);
+    } else if (is_caps_on){
+        // Reset back to the current profile if there is no layer active
+        if(!layer_state_is(_VI) && !layer_state_is(_NL) && !layer_state_is(_MS)) {
+            annepro2LedResetForegroundColor();
+            is_caps_on = false;
+        }
+    }
+    return true;
+}
+
+
+/* // The function to handle the caps lock logic */
+/* bool led_update_user(led_t leds) { */
+/*   if (leds.caps_lock) { */
+/*     // Set the leds to red */
+/*     annepro2LedSetForegroundColor(0xFF, 0x00, 0x00); */
+/*   } else { */
+/*     annepro2LedResetForegroundColor(); */
+/*   } */
+
+/*   return true; */
+/* } */

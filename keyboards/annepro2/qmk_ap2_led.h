@@ -17,6 +17,8 @@
 #define CMD_LED_CLEAR_FOREGROUND_COLOR      0xF
 #define CMD_LED_IAP                         0x10
 #define CMD_LED_KEYPRESS                    0x11
+#define CMD_LED_CAPS_ON                     0x30
+#define CMD_LED_CAPS_OFF                    0x31
 
 void annepro2SetIAP(void);
 void annepro2LedDisable(void);
