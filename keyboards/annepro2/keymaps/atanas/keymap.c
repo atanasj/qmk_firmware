@@ -42,7 +42,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if(is_led_on) {
                 is_led_on = false;
                 annepro2LedDisable();
-                SEND_STRING(SS_LCTL(SS_LSFT(SS_TAP(X_ESC))));
+                SEND_STRING(SS_LCTL(SS_LGUI("q")) SS_DELAY(500) SS_TAP(X_ESC));
             }
         }
         return true;
@@ -247,7 +247,7 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
 
  [_FN2_LAYER] = KEYMAP( /* Base */
     KC_AP2_USB, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, XXXXXXX, XXXXXXX, XXXXXXX, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, XXXXXXX, _______,
-    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      XXXXXXX,                  KC_HOME,         KC_END,  KC_AP2_BT_UNPAIR,
+    XXXXXXX,    SUSPEND,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      XXXXXXX,                  KC_HOME,         KC_END,  KC_AP2_BT_UNPAIR,
     KC_CAPS,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      KC_PGUP,                  KC_PGDN,         XXXXXXX,
     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_INS,       KC_DEL,                   XXXXXXX,
     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, _______, _______
@@ -983,12 +983,12 @@ bool led_update_user(led_t leds) {
         // Set the leds to red
         is_caps_on = true;
         annepro2LedSetForegroundColor(0xFF, 0x00, 0x00);
-    } else if (is_caps_on){
-        // Reset back to the current profile if there is no layer active
-        if(!layer_state_is(_VI) && !layer_state_is(_NL) && !layer_state_is(_MS)) {
-            annepro2LedResetForegroundColor();
-            is_caps_on = false;
-        }
+    /* } else if (is_caps_on){ */
+    /*     // Reset back to the current profile if there is no layer active */
+    /*     if(!layer_state_is(_VI) && !layer_state_is(_NL) && !layer_state_is(_MS)) { */
+    /*         annepro2LedResetForegroundColor(); */
+    /*         is_caps_on = false; */
+    /*     } */
     }
     return true;
 }
