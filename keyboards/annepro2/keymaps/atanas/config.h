@@ -10,3 +10,7 @@
 
 #define MK_3_SPEED
 #define MK_MOMENTARY_ACCEL
+
+/* #define IS_COMMAND() (matrix_is_on(3, 0) && matrix_is_on(3, 11)) */
+/* #define IS_COMMAND() (matrix_is_on(0, 1) && matrix_is_on(0, 3) && matrix_is_on(0, 4) && matrix_is_on(0, 5)) */
+/* #define IS_COMMAND() (get_mods() == (MOD_BIT(KC_Q) | MOD_BIT(KC_W) | MOD_BIT(KC_E) | MOD_BIT(KC_R))) */
