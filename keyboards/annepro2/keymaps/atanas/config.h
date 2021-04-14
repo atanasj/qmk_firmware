@@ -1,3 +1,5 @@
+#pragma once
+
 #undef TAPPING_TERM
 #define TAPPING_TERM 175
 #define TAPPING_TERM_PER_KEY
@@ -7,6 +9,12 @@
 
 #define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 350
+
+#define COMBO_COUNT 6
+#define COMBO_TERM 50
+
+#define AUTO_SHIFT_TIMEOUT 150
+#define NO_AUTO_SHIFT_ALPHA
 
 #define MK_3_SPEED
 #define MK_MOMENTARY_ACCEL

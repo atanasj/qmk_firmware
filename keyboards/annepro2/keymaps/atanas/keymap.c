@@ -16,6 +16,32 @@ enum macros {
     SUSPEND = AP2_SAFE_RANGE
 };
 
+enum combos {
+  JL_BSPC,
+  JK_TAB,
+  KL_ENT,
+  /* n = num layer */
+  n46_BSPC,
+  n45_TAB,
+  n56_ENT
+};
+
+const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
+const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM kl_combo[] = {KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM n46_combo[] = {KC_4, KC_6, COMBO_END};
+const uint16_t PROGMEM n45_combo[] = {KC_4, KC_5, COMBO_END};
+const uint16_t PROGMEM n56_combo[] = {KC_5, KC_6, COMBO_END};
+
+combo_t key_combos[COMBO_COUNT] = {
+  [JL_BSPC] = COMBO(jl_combo, KC_BSPC),
+  [JK_TAB] = COMBO(jk_combo, KC_TAB),
+  [KL_ENT] = COMBO(kl_combo, KC_ENT),
+  [n46_BSPC] = COMBO(n46_combo, KC_BSPC),
+  [n45_TAB] = COMBO(n45_combo, KC_TAB),
+  [n56_ENT] = COMBO(n56_combo, KC_ENT)
+};
+
 // Track led status
 bool is_led_on = true;
 
@@ -188,9 +214,9 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_BL] = KEYMAP( /* Base */
-    LT(_FN,KC_GRV), KC_1,                         KC_2,                         KC_3,          KC_4,            KC_5,          KC_6,         KC_7,           KC_8,    KC_9,   KC_0,       KC_MINS,                KC_EQL,        KC_BSPC,
-    LCMD_T(KC_TAB), KC_Q,                         KC_W,                         LT(_MS,KC_E),  KC_R,            KC_T,          KC_Y,         KC_U,           KC_I,    KC_O,   KC_P,       TD(PIPE_),              KC_RBRC,       RCMD_T(KC_BSLS),
-    LCTL_T(KC_ESC), KC_A,                         KC_S,                         LT(_VI,KC_D),  KC_F,            KC_G,          KC_H,         KC_J,           KC_K,    KC_L,   TD(SEMI_),  LT(_FN2_LAYER,KC_QUOT), RCTL_T(KC_ENT),
+    LT(_FN,KC_GRV), KC_1,                         KC_2,                         KC_3,          KC_4,            KC_5,          KC_6,         KC_7,           KC_8,    KC_9,   KC_0,       KC_MINS,   KC_EQL,        KC_BSPC,
+    LCMD_T(KC_TAB), KC_Q,                         KC_W,                         LT(_MS,KC_E),  KC_R,            KC_T,          KC_Y,         KC_U,           KC_I,    KC_O,   KC_P,       TD(PIPE_), KC_RBRC,       RCMD_T(KC_BSLS),
+    LCTL_T(KC_ESC), KC_A,                         KC_S,                         LT(_VI,KC_D),  KC_F,            KC_G,          KC_H,         KC_J,           KC_K,    KC_L,   TD(SEMI_),  KC_QUOT,   RCTL_T(KC_ENT),
     KC_LSPO,        KC_Z,                         KC_X,                         KC_C,          KC_V,            KC_B,          KC_N,         KC_M,           KC_COMM, KC_DOT, TD(SL_HLP), KC_RSFT,
     HYPR_T(KC_F20), MT(MOD_LGUI|MOD_LCTL,KC_ESC), MT(MOD_LGUI|MOD_LALT,KC_SPC), ALT_T(KC_SPC), LCAG_T(KC_LEFT), TD(META_DOWN), TD(SUPER_UP), SGUI_T(KC_RIGHT)
 ),
@@ -221,19 +247,19 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
  ),
  /* FN layer */
  [_FN] = KEYMAP( /* Base */
-    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPLY, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX, _______, _______
+    _______, KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
+    XXXXXXX, KC_ASDN, KC_ASUP,  KC_ASRP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPLY, CMB_ON,  CMB_OFF, CMB_TOG,
+    XXXXXXX, KC_ASON, KC_ASOFF, KC_ASTG, XXXXXXX, XXXXXXX, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, KC_BRID,  KC_BRIU, XXXXXXX, XXXXXXX, _______, _______
 ),
  /* FN2 layer */
  [_FN2_LAYER] = KEYMAP( /* Base */
     KC_AP2_USB, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_AP2_BT_UNPAIR, XXXXXXX, XXXXXXX, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, XXXXXXX, XXXXXXX,
-    SUSPEND,    S(KC_BSLS), KC_BSLS,    KC_QUOT,    S(KC_QUOT), XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      XXXXXXX,                  XXXXXXX,         XXXXXXX, XXXXXXX,
+    SUSPEND,    S(KC_GRV),  KC_GRV,     KC_BSLS,    S(KC_BSLS), XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      XXXXXXX,                  XXXXXXX,         XXXXXXX, XXXXXXX,
     XXXXXXX,    S(KC_LBRC), KC_LBRC,    KC_RBRC,    S(KC_RBRC), XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      _______,                  XXXXXXX,         XXXXXXX,
     XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX,      XXXXXXX,                  XXXXXXX,
-    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,          XXXXXXX, XXXXXXX
+    XXXXXXX,    XXXXXXX,    XXXXXXX,    KC_LGUI,    XXXXXXX,    XXXXXXX,          XXXXXXX, XXXXXXX
 ),
 
 };
@@ -479,7 +505,9 @@ void semi_finished(qk_tap_dance_state_t *state, void *user_data) {
     case SINGLE_TAP:
         register_code(KC_SCLN);
         break;
-        /* case SINGLE_HOLD: register_code(KC_LCTRL); break; */
+    case SINGLE_HOLD:
+        layer_on(_FN2_LAYER);
+        break;
     case DOUBLE_TAP:
         register_code(KC_LSFT);
         register_code(KC_MINS);
@@ -491,7 +519,9 @@ void semi_reset(qk_tap_dance_state_t *state, void *user_data) {
     case SINGLE_TAP:
         unregister_code(KC_SCLN);
         break;
-        /* case SINGLE_HOLD: unregister_code(KC_LCTRL); break; */
+    case SINGLE_HOLD:
+        layer_off(_FN2_LAYER);
+        break;
     case DOUBLE_TAP:
         unregister_code(KC_LSFT);
         unregister_code(KC_MINS);
