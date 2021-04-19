@@ -20,27 +20,66 @@ enum combos {
   JL_BSPC,
   JK_TAB,
   KL_ENT,
-  /* n = num layer */
+  AS_CAP,
+  /* num layer */
+  /* NOTE this not working with auto shift, need to ask on the discord if and
+     how this can work */
   n46_BSPC,
   n45_TAB,
-  n56_ENT
+  n56_ENT,
+  n89_ESC,
+  /* vi layer */
+  IO_ESC,
+  WO_M8,
+  _F1,
+  _F2,
+  _F6
 };
 
 const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM kl_combo[] = {KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
 const uint16_t PROGMEM n46_combo[] = {KC_4, KC_6, COMBO_END};
 const uint16_t PROGMEM n45_combo[] = {KC_4, KC_5, COMBO_END};
 const uint16_t PROGMEM n56_combo[] = {KC_5, KC_6, COMBO_END};
+const uint16_t PROGMEM n89_combo[] = {KC_8, KC_9, COMBO_END};
+const uint16_t PROGMEM io_combo[] = {KC_PGUP, KC_END, COMBO_END};
+const uint16_t PROGMEM wo_combo[] = {KC_W, KC_O, COMBO_END};
+const uint16_t PROGMEM f1_combo[] = {KC_F, KC_M, COMBO_END};
+const uint16_t PROGMEM f2_combo[] = {KC_F, KC_COMM, COMBO_END};
+const uint16_t PROGMEM f6_combo[] = {KC_F, KC_L, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [JL_BSPC] = COMBO(jl_combo, KC_BSPC),
   [JK_TAB] = COMBO(jk_combo, KC_TAB),
   [KL_ENT] = COMBO(kl_combo, KC_ENT),
+  [AS_CAP] = COMBO(as_combo, KC_CAPS),
   [n46_BSPC] = COMBO(n46_combo, KC_BSPC),
   [n45_TAB] = COMBO(n45_combo, KC_TAB),
-  [n56_ENT] = COMBO(n56_combo, KC_ENT)
+  [n56_ENT] = COMBO(n56_combo, KC_ENT),
+  [n89_ESC] = COMBO(n89_combo, KC_ESC),
+  [IO_ESC] = COMBO(io_combo, KC_ESC),
+  [WO_M8] = COMBO_ACTION(wo_combo),
+  [_F1] = COMBO(f1_combo, KC_F1),
+  [_F2] = COMBO(f2_combo, KC_F2),
+  [_F6] = COMBO(f6_combo, KC_F6)
 };
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case WO_M8:
+      if (pressed) {
+        tap_code16(KC_MS_BTN5);
+      }
+      break;
+    /* case XV_PASTE: */
+    /*   if (pressed) { */
+    /*     tap_code16(LCTL(KC_V)); */
+    /*   } */
+    /*   break; */
+  }
+}
 
 // Track led status
 bool is_led_on = true;
@@ -124,6 +163,7 @@ enum {
     N_NNEW,
     SEMI_,
     PIPE_,
+    DEVI_
     /* R_CTL, */
     /* L_CTL, */
     /* R_CMD, */
@@ -139,6 +179,8 @@ void x_finished(qk_tap_dance_state_t *state, void *user_data);
 void x_reset(qk_tap_dance_state_t *state, void *user_data);
 void meta_finished(qk_tap_dance_state_t *state, void *user_data);
 void meta_reset(qk_tap_dance_state_t *state, void *user_data);
+/* void devi_finished(qk_tap_dance_state_t *state, void *user_data); */
+/* void devi_reset(qk_tap_dance_state_t *state, void *user_data); */
 /* void r_ctl_finished(qk_tap_dance_state_t *state, void *user_data); */
 /* void r_ctl_reset(qk_tap_dance_state_t *state, void *user_data); */
 /* void l_ctl_finished(qk_tap_dance_state_t *state, void *user_data); */
@@ -156,8 +198,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         return 275;
     case RCTL_T(KC_ENT):
         return 350;
-    /* case META_DOWN: */
-    /*     return 200; */
+    case SL_HLP:
+        return 150;
     /* case SUPER_UP: */
     /*     return 200; */
     /* case L_CTL: */
@@ -225,17 +267,17 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
  [_VI] = KEYMAP( /* Base */
     _______, _______, _______, _______, _______, _______, _______,    _______,  _______, _______,   _______, _______,       _______,       _______,
     _______, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX, KC_HOME,    KC_PGDN,  KC_PGUP, KC_END,    XXXXXXX, SCMD(KC_LBRC), SCMD(KC_RBRC), KC_LEAD,
-    _______, KC_LALT, KC_LSFT, _______, KC_LCMD, XXXXXXX, KC_LEFT,    KC_DOWN,  KC_UP,   KC_RIGHT,  KC_F19,  KC_CAPS,       _______,
+    _______, KC_LCMD, KC_LALT, _______, KC_LSFT, XXXXXXX, KC_LEFT,    KC_DOWN,  KC_UP,   KC_RIGHT,  KC_F19,  KC_CAPS,       _______,
     XXXXXXX, MO(_NL), _______, _______, _______, M_DBW,   A(KC_BSPC), KC_BSPC,  KC_DEL,  A(KC_DEL), M_DFW,   _______,
     _______, _______, _______, _______, _______, _______, _______,    _______
 ),
  /* NL layer */
  [_NL] = KEYMAP( /* Base */
-    XXXXXXX, XXXXXXX, XXXXXXX,        XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, _______,
-    XXXXXXX, XXXXXXX, XXXXXXX,        _______, XXXXXXX,         XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    KC_EQL,  XXXXXXX, XXXXXXX, XXXXXXX,
-    _______, XXXXXXX, XXXXXXX,        _______, LSFT_T(KC_PDOT), XXXXXXX, XXXXXXX, KC_4,    KC_5,    KC_6,    KC_MINS, XXXXXXX, _______,
-    XXXXXXX, _______, LALT_T(KC_DEL), XXXXXXX, KC_ENT,          XXXXXXX, KC_BSPC, KC_1,    KC_2,    KC_3,    KC_PSLS, KC_TAB,
-    XXXXXXX, XXXXXXX, _______,        KC_0,    XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, _______,
+    XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX,         XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    KC_EQL,  XXXXXXX, XXXXXXX, XXXXXXX,
+    _______, XXXXXXX, KC_LALT, _______, LSFT_T(KC_PDOT), XXXXXXX, XXXXXXX, KC_4,    KC_5,    KC_6,    KC_MINS, XXXXXXX, _______,
+    XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    KC_PSLS, KC_TAB,
+    XXXXXXX, XXXXXXX, _______, KC_0,    _______,         XXXXXXX, XXXXXXX, XXXXXXX
  ),
  /* MS layer */
  [_MS] = KEYMAP( /* Base */
@@ -270,54 +312,72 @@ void matrix_init_user(void) {
 
 }
 
-/* Return an integer that corresponds to what kind of tap dance should be executed.
- *
- * How to figure out tap dance state: interrupted and pressed.
- *
- * Interrupted: If the state of a dance dance is "interrupted", that means that another key has been hit
- *  under the tapping term. This is typically indicitive that you are trying to "tap" the key.
- *
- * Pressed: Whether or not the key is still being pressed. If this value is true, that means the tapping term
- *  has ended, but the key is still being pressed down. This generally means the key is being "held".
- *
- * One thing that is currenlty not possible with qmk software in regards to tap dance is to mimic the "permissive hold"
- *  feature. In general, advanced tap dances do not work well if they are used with commonly typed letters.
- *  For example "A". Tap dances are best used on non-letter keys that are not hit while typing letters.
- *
- * Good places to put an advanced tap dance:
- *  z,q,x,j,k,v,b, any function key, home/end, comma, semi-colon
- *
- * Criteria for "good placement" of a tap dance key:
- *  Not a key that is hit frequently in a sentence
- *  Not a key that is used frequently to double tap, for example 'tab' is often double tapped in a terminal, or
- *    in a web form. So 'tab' would be a poor choice for a tap dance.
- *  Letters used in common words as a double. For example 'p' in 'pepper'. If a tap dance function existed on the
- *    letter 'p', the word 'pepper' would be quite frustating to type.
- *
- * For the third point, there does exist the 'DOUBLE_SINGLE_TAP', however this is not fully tested
- *
- */
 uint8_t cur_dance(qk_tap_dance_state_t *state) {
     if (state->count == 1) {
         if (state->interrupted || !state->pressed) return SINGLE_TAP;
-        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
         else return SINGLE_HOLD;
     } else if (state->count == 2) {
-        // DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap
-        // action when hitting 'pp'. Suggested use case for this return value is when you want to send two
-        // keystrokes of the key, and not the 'double tap' action/macro.
         if (state->interrupted) return DOUBLE_SINGLE_TAP;
         else if (state->pressed) return DOUBLE_HOLD;
         else return DOUBLE_TAP;
-    }
-
-    // Assumes no one is trying to type the same letter three times (at least not quickly).
-    // If your tap dance key is 'KC_W', and you want to type "www." quickly - then you will need to add
-    // an exception here to return a 'TRIPLE_SINGLE_TAP', and define that enum just like 'DOUBLE_SINGLE_TAP'
-    if (state->count == 3) {
+    } if (state->count == 3) {
         if (state->interrupted || !state->pressed) return TRIPLE_TAP;
         else return TRIPLE_HOLD;
-    } else return 8; // Magic number. At some point this method will expand to work for more presses
+    } else return 8;
+}
+
+// Create an instance of 'tap' for the 'meta' tap dance.
+static tap devi_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+void devi_finished(qk_tap_dance_state_t *state, void *user_data) {
+    devi_tap_state.state = cur_dance(state);
+    switch (devi_tap_state.state) {
+    case SINGLE_TAP:
+        tap_code(KC_D);
+        break;
+    case SINGLE_HOLD:
+        layer_on(_VI);
+        break;
+    case DOUBLE_TAP:
+        if (layer_state_is(_MS) || layer_state_is(_NL)) {
+            layer_off(_MS);
+            layer_off(_NL);
+        } else {
+            tap_code(KC_D);
+            tap_code(KC_D);
+        }
+        break;
+    case DOUBLE_HOLD:
+        layer_on(_NL);
+        break;
+    case TRIPLE_TAP:
+        if (layer_state_is(_NL)) {
+            layer_off(_NL);
+        } else {
+            layer_on(_NL);
+        }
+        break;
+    case TRIPLE_HOLD:
+        layer_on(_MS);
+        break;
+    }
+}
+
+void devi_reset(qk_tap_dance_state_t *state, void *user_data) {
+    // If the key was held down and now is released then switch off the layer
+    if (devi_tap_state.state == SINGLE_HOLD) {
+        layer_off(_VI);
+    }
+    if (devi_tap_state.state == DOUBLE_HOLD) {
+        layer_off(_NL);
+    }
+    if (devi_tap_state.state == TRIPLE_HOLD) {
+        layer_off(_MS);
+    }
+    devi_tap_state.state = 0;
 }
 
 // Create an instance of 'tap' for the 'meta' tap dance.
@@ -944,8 +1004,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [SUPER_UP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, super_finished, super_reset, 175),
     [X_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, x_finished, x_reset),
     /* NOTE in newer qmk firmware `_TIME` suffix function is depracted, use TAPPING_TERM_PER_KEY instead */
-    [SL_HLP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, help_finished, help_reset, 150),
-    [SEMI_]  = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, semi_finished, semi_reset, 150),
+    [SL_HLP] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, help_finished, help_reset),
+    [SEMI_]  = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, semi_finished, semi_reset, 175),
     [PIPE_]  = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, pipe_finished, pipe_reset, 150),
     [Z_UNDO] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, undo_finished, undo_reset, 175),
     [O_SAVE] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, save_finished, save_reset, 175),
@@ -956,8 +1016,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [W_WIND] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, wind_finished, wind_reset, 130),
     [F_FIND] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, find_finished, find_reset, 120),
     [Q_QAPP] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, qapp_finished, qapp_reset, 150),
+    [DEVI_] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, devi_finished, devi_reset, 250),
     [N_NNEW] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, nnew_finished, nnew_reset, 120)
-
 };
 
 /* leader key */
