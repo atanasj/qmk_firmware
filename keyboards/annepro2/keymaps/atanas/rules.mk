@@ -4,6 +4,10 @@ COMMAND_ENABLE = no
 DEBUG_EEPROM = yes
 LEADER_ENABLE = yes
 TAP_DANCE_ENABLE = yes
+
+# keep path to combos local to my keymap
+VPATH  +=  keyboards/annepro2/keymaps/atanas/gboards/
+# SRC    +=  g/engine.c
 COMBO_ENABLE = yes
 # AUTO_SHIFT_ENABLE = yes
 
