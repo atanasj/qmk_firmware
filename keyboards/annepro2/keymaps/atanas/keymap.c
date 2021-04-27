@@ -2,7 +2,6 @@
 #include "annepro2.h"
 #include "qmk_ap2_led.h"
 #include "config.h"
-/* #include "g/config_engine.h" */
 
 enum anne_pro_layers {
   _BL = 0,        // base layer
@@ -14,6 +13,7 @@ enum anne_pro_layers {
 };
 
 #include "g/keymap_combo.h"
+/* #include "g/config_engine.h" */
 
 // Track led status add something
 bool is_led_on = true;
