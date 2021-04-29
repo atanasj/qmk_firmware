@@ -1,19 +1,31 @@
-// Vim-Mode combos
-
+// base-layer combos
 COMB(jlBspc,     KC_BSPC,         KC_J, KC_L)
 COMB(jkTab,      KC_TAB,          KC_J, KC_K)
-// COMB(ioEsc,      KC_ESC,          KC_I, KC_O)
+COMB(ioEsc,      KC_ESC,          KC_I, KC_O)
+COMB(uoDel,      KC_DEL,          KC_U, KC_O)
 COMB(klEnt,      KC_ENT,          KC_K, KC_L)
-
+/* COMB(dfMute,     KC_MUTE,         KC_D, KC_F) */
+/* COMB(asPlay,     KC_MPLY,         KC_A, KC_S) */
 /* COMB(asCaps,     KC_CAPS,         KC_A, KC_S) */
 
+// vi-layer combos
+COMB(dlBspc,     KC_BSPC,         KC_DOWN, KC_RIGHT)
+COMB(rdTab,      KC_TAB,          KC_DOWN, KC_UP)
+COMB(puendEsc,   KC_ESC,          KC_PGUP, KC_END)
+COMB(pdendDEl,   KC_DEL,          KC_PGDN, KC_END)
+COMB(urEnt,      KC_ENT,          KC_UP, KC_RIGHT)
+
+
+// numpad layer combos
 COMB(n46Bspc,    KC_BSPC,         KC_4, KC_6)
 COMB(n45Tab,     KC_TAB,          KC_4, KC_5)
 COMB(n89Esc,     KC_ESC,          KC_8, KC_9)
+COMB(n79Del,     KC_DEL,          KC_7, KC_9)
 COMB(n56Ent,     KC_ENT,          KC_5, KC_6)
 
 /* COMB(woMB5,      KC_MS_BTN5,      KC_W, KC_O) */
 
+// useful function keys
 COMB(fmF1,       KC_F1,           KC_F, KC_M)
 COMB(fcommF2,    KC_F2,           KC_F, KC_COMM)
 COMB(flF6,       KC_F6,           KC_F, KC_L)
@@ -22,6 +34,8 @@ COMB(flF6,       KC_F6,           KC_F, KC_L)
 /* COMB(rightMETA,  C(A(KC_LGUI)),   KC_J, KC_O) */
 /* SUBS(pasta,       "I'd just like to interject for a moment.",       KC_H, KC_J, KC_K, KC_L) */
 /* SUBS(helloWorld, "QMK is pretty rad eh?", KC_H, KC_J) */
+
+// layer toggle
 TOGG(viTogg,      _VI,            KC_V, KC_L)
 TOGG(nlTogg,      _NL,            KC_N, KC_L)
 TOGG(mlTogg,      _MS,            KC_M, KC_L)

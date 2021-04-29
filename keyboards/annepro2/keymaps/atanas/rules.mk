@@ -9,7 +9,6 @@ TAP_DANCE_ENABLE = yes
 VPATH  +=  keyboards/annepro2/keymaps/atanas/gboards/
 # SRC    +=  g/engine.c
 COMBO_ENABLE = yes
-# AUTO_SHIFT_ENABLE = yes
 
 ifeq ($(strip $(BOARD)), ANNEPRO2_C18)
 ANNEPRO2_EEPROM = yes
@@ -20,7 +19,4 @@ ifeq ($(strip $(ANNEPRO2_EEPROM)), yes)
     SRC += spi_master.c eeprom_w25x20cl.c
 endif
 
-# Options
 MOUSEKEY_ENABLE = yes
-
-# Keys

@@ -119,9 +119,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case SL_HLP:
         return 150;
     case KC_LSPO:
-        return 120;
+        return 125;
     case KC_RSPC:
-        return 120;
+        return 125;
     case SEMI_:
         return 155;
     default:
@@ -197,7 +197,7 @@ bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
     KC_N,    KC_L,    XXXXXXX, XXXXXXX,  XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, _______,
     XXXXXXX, XXXXXXX, XXXXXXX, _______,  XXXXXXX,         XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    KC_EQL,  XXXXXXX, XXXXXXX, XXXXXXX,
     _______, KC_LGUI, KC_LALT, _______,  LSFT_T(KC_PDOT), XXXXXXX, XXXXXXX, KC_4,    KC_5,    KC_6,    KC_MINS, XXXXXXX, _______,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  LGUI_T(KC_ENT),         XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    KC_PSLS, KC_TAB,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_LGUI,         XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    KC_PSLS, KC_TAB,
     XXXXXXX, XXXXXXX, _______, KC_0,     _______,         XXXXXXX, XXXXXXX, XXXXXXX
  ),
  /* MS layer */
