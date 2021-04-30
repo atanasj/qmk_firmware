@@ -12,7 +12,7 @@
 
 #define COMBO_VARIABLE_LEN
 /* #define COMBO_COUNT 13 */
-#define COMBO_TERM 25
+#define COMBO_TERM 15
 
 #define MK_3_SPEED
 #define MK_MOMENTARY_ACCEL

@@ -119,9 +119,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case SL_HLP:
         return 150;
     case KC_LSPO:
-        return 125;
+        return 128;
     case KC_RSPC:
-        return 125;
+        return 128;
     case SEMI_:
         return 155;
     default:
